@@ -1,0 +1,3 @@
+import { COLORS, FONTWEIGHT, SIZES, SHADOWS } from './theme';
+
+export { COLORS, FONTWEIGHT, SIZES, SHADOWS };
