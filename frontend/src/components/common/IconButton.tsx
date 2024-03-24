@@ -1,13 +1,22 @@
-import { TouchableOpacity } from 'react-native';
+import {
+  TouchableOpacity,
+  TouchableOpacityProps,
+  ViewStyle,
+} from 'react-native';
 import React, { ReactNode } from 'react';
-import { COLORS } from '@/src/constants';
 
-interface IconButtonProps {
+interface IconButtonProps extends TouchableOpacityProps {
   children: ReactNode;
   size: number;
+  buttonStyle?: ViewStyle;
 }
 
-const IconButton = ({ children, size = 40 }: IconButtonProps) => {
+const IconButton = ({
+  children,
+  size = 40,
+  buttonStyle,
+  ...props
+}: IconButtonProps) => {
   return (
     <TouchableOpacity
       style={{
@@ -17,8 +26,9 @@ const IconButton = ({ children, size = 40 }: IconButtonProps) => {
         width: size,
         height: size,
         borderRadius: 24,
-        backgroundColor: COLORS.white,
+        ...buttonStyle,
       }}
+      {...props}
     >
       {children}
     </TouchableOpacity>

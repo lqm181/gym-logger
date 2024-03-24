@@ -1,4 +1,4 @@
-import { DimensionValue } from 'react-native';
+import { DimensionValue, View } from 'react-native';
 import { Image, ImageSource, ImageStyle } from 'expo-image';
 import { FontAwesome6 } from '@expo/vector-icons';
 
@@ -19,7 +19,6 @@ const UserAvatar = ({
       source={image_url}
       contentFit='cover'
       style={{
-        flex: 1,
         width: dimension,
         height: dimension,
         borderRadius: 24,
@@ -27,11 +26,21 @@ const UserAvatar = ({
       }}
     />
   ) : (
-    <FontAwesome6
-      name='user'
-      size={(dimension as number) * 0.6}
-      color={color}
-    />
+    <View
+      style={{
+        width: dimension,
+        height: dimension,
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...imageStyle,
+      }}
+    >
+      <FontAwesome6
+        name='user'
+        size={(dimension as number) * 0.6}
+        color={color}
+      />
+    </View>
   );
 };
 

@@ -1,15 +1,27 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 import styles from './welcome.style';
-import { Image } from 'expo-image';
+import UserAvatar from '../../common/UserAvatar';
+import { COLORS } from '@/src/constants';
 
 const Welcome = () => {
   const user = { firstName: 'John', lastName: 'Doe' };
 
   return (
-    <View style={{ width: '100%' }}>
-      <Text style={styles.helloMessage}>Good morning, {user.firstName}</Text>
-      <Text style={styles.welcomeMessage}>Starting tracking your workout</Text>
+    <View style={styles.container}>
+      <UserAvatar
+        dimension={60}
+        image_url={''}
+        imageStyle={{
+          backgroundColor: COLORS.white,
+        }}
+      />
+      <View style={{ marginLeft: 30 }}>
+        <Text style={styles.helloMessage}>Hello, {user.firstName}</Text>
+        <Text style={styles.welcomeMessage}>
+          Track and organize your workout
+        </Text>
+      </View>
     </View>
   );
 };

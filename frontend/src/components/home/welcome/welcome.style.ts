@@ -3,15 +3,18 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   helloMessage: {
     fontSize: SIZES.large,
     color: COLORS.secondary,
+    fontWeight: FONTWEIGHT.bold,
   },
   welcomeMessage: {
-    fontSize: SIZES.xLarge,
-    fontWeight: FONTWEIGHT.bold,
+    fontSize: SIZES.medium,
+    color: COLORS.gray,
     marginTop: 2,
   },
 });
