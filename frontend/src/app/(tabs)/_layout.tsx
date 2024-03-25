@@ -1,7 +1,7 @@
 import { Text } from 'react-native';
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { FontAwesome6, Ionicons } from '@expo/vector-icons';
+import { FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { COLORS, SIZES } from '@/src/constants';
 import { IconButton, UserAvatar } from '@/src/components';
 
@@ -16,9 +16,9 @@ export default function Layout() {
           headerStyle: {
             backgroundColor: COLORS.lightWhite,
           },
-          title: '',
-          tabBarIcon: ({ color }) => (
-            <Ionicons name='home-outline' size={28} color={color} />
+          title: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name='home-outline' size={size} color={color} />
           ),
           headerLeft: () => (
             <IconButton size={40}>
@@ -41,6 +41,42 @@ export default function Layout() {
           headerRightContainerStyle: {
             paddingRight: SIZES.small,
           },
+        }}
+      />
+      <Tabs.Screen
+        name='log'
+        options={{
+          title: 'Log',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name='list' size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name='add_exercise'
+        options={{
+          title: 'Start Exercise',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name='add-circle-outline' size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name='routine'
+        options={{
+          title: 'Routine',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name='edit-calendar' size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name='profile'
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome6 name='user' size={size} color={color} />
+          ),
         }}
       />
     </Tabs>
