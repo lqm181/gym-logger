@@ -8,6 +8,11 @@ const COLORS = {
 
   white: '#F3F4F8',
   lightWhite: '#FAFAFC',
+
+  black: '#0C0C0C',
+  error: '#DA1E28',
+  info: '#03a9f4',
+  success: '#198038',
 };
 
 const FONTWEIGHT = {
