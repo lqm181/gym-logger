@@ -1,4 +1,4 @@
-import { Text } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -7,7 +7,7 @@ import { IconButton, UserAvatar } from '@/src/components';
 
 export default function Layout() {
   return (
-    <Tabs>
+    <Tabs initialRouteName='index' backBehavior='history'>
       <Tabs.Screen
         name='index'
         options={{
@@ -44,18 +44,25 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name='log'
+        name='logs'
         options={{
-          title: 'Log',
+          title: 'Logs',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name='list' size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name='add_exercise'
+        name='(log)'
         options={{
           title: 'Start Exercise',
+          // href: {
+          //   pathname: '/(tabs)/(log)/[date]',
+          //   params: {
+          //     date: new Date().toLocaleDateString(),
+          //   },
+          // },
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name='add-circle-outline' size={size} color={color} />
           ),
@@ -78,6 +85,10 @@ export default function Layout() {
             <FontAwesome6 name='user' size={size} color={color} />
           ),
         }}
+      />
+      <Tabs.Screen
+        name='add_exercise'
+        options={{ href: null, headerShown: false }}
       />
     </Tabs>
   );
