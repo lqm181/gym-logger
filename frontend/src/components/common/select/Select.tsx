@@ -12,7 +12,7 @@ interface OptionProps {
 
 interface SelectProps extends DropdownProps<OptionProps> {
   selectLabel?: string;
-  containerStyle?: ViewStyle;
+  selectContainerStyle?: ViewStyle;
   labelStyle?: TextStyle;
   color?: ColorValue;
 }
@@ -21,7 +21,7 @@ const Select = ({
   selectLabel,
   placeholder,
   value,
-  containerStyle,
+  selectContainerStyle,
   labelStyle,
   color,
   ...dropdownProps
@@ -47,7 +47,7 @@ const Select = ({
   };
 
   return (
-    <View style={[styles.selectContainer, containerStyle]}>
+    <View style={[styles.selectContainer, selectContainerStyle]}>
       {renderLabel()}
       <Dropdown
         {...dropdownProps}
@@ -62,7 +62,6 @@ const Select = ({
         iconStyle={styles.iconStyle}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        containerStyle={{ backgroundColor: COLORS.lightWhite }}
       ></Dropdown>
     </View>
   );

@@ -21,6 +21,7 @@ const Button = ({
   color = 'primary',
   style,
   textProps,
+  disabled,
   ...props
 }: ButtonProps) => {
   let textStyles = [];
@@ -71,7 +72,10 @@ const Button = ({
     }
   }
   return (
-    <TouchableOpacity style={[...buttonStyles, style]} {...props}>
+    <TouchableOpacity
+      style={[...buttonStyles, style, disabled && styles.disabled]}
+      {...props}
+    >
       {typeof children === 'string' ? (
         <Text style={[textStyles, textProps]}>{children}</Text>
       ) : (

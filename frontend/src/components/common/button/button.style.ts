@@ -2,6 +2,9 @@ import { COLORS, FONTWEIGHT, SIZES } from '@/src/constants';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  disabled: {
+    opacity: 0.5,
+  },
   buttonBase: {
     paddingVertical: 10,
     paddingHorizontal: 20,
