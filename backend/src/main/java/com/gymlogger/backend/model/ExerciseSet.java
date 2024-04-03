@@ -1,5 +1,6 @@
 package com.gymlogger.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 @Table(name = "exercise_set")
 public class ExerciseSet {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private float weight;
@@ -18,8 +20,8 @@ public class ExerciseSet {
     @Column(columnDefinition = "TEXT")
     private String note;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exercise_performed_id")
     private ExercisePerformed exercisePerformed;
 
     public ExerciseSet() {

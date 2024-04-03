@@ -1,6 +1,7 @@
 package com.gymlogger.backend.service;
 
 import com.gymlogger.backend.model.ExercisePerformed;
+import com.gymlogger.backend.model.ExerciseSet;
 import com.gymlogger.backend.model.Workout;
 import com.gymlogger.backend.repository.ExercisePerformedRepository;
 import com.gymlogger.backend.repository.WorkoutRepository;
@@ -19,6 +20,12 @@ public class ExercisePerformedServiceImpl implements ExercisePerformedService {
         Workout workoutRef = workoutRepository.getReferenceById(workoutId);
 
         exercisePerformed.setWorkout(workoutRef);
+        for (ExerciseSet exerciseSet : exercisePerformed.getExerciseSets()) {
+            if (exerciseSet.getExercisePerformed() == null) {
+                exerciseSet.setExercisePerformed(exercisePerformed);
+            }
+        }
+
         exercisePerformedRepository.save(exercisePerformed);
     }
 }
