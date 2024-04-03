@@ -76,4 +76,16 @@ public class Workout {
     public void setPerformedExercises(List<ExercisePerformed> performedExercises) {
         this.performedExercises = performedExercises;
     }
+
+    @Override
+    public String toString() {
+        return "Workout{" +
+                "id=" + id +
+                ", user=" + user +
+                ", title='" + title + '\'' +
+                ", created_at=" + created_at +
+                ", last_updated=" + last_updated +
+                ", performedExercises=" + performedExercises +
+                '}';
+    }
 }
