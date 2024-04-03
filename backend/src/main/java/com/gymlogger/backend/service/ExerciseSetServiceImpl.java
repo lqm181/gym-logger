@@ -15,10 +15,10 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
     ExercisePerformedRepository exercisePerformedRepository;
 
     @Override
-    public void addSetToExercise(ExerciseSet exerciseSet, Long performedExerciseId) {
+    public ExerciseSet addSetToExercise(ExerciseSet exerciseSet, Long performedExerciseId) {
         ExercisePerformed exercisePerformedRef = exercisePerformedRepository.getReferenceById(performedExerciseId);
 
         exerciseSet.setExercisePerformed(exercisePerformedRef);
-        exerciseSetRepository.save(exerciseSet);
+        return exerciseSetRepository.save(exerciseSet);
     }
 }

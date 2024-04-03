@@ -15,8 +15,7 @@ public class ExercisePerformedController {
 
     @PostMapping("/workouts/{workoutId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public String performNewExercise(@RequestBody ExercisePerformed exercisePerformed, @PathVariable Long workoutId) {
-        exercisePerformedService.addExerciseToWorkout(exercisePerformed, workoutId);
-        return "Performed exercise add success!";
+    public ExercisePerformed performNewExercise(@RequestBody ExercisePerformed exercisePerformed, @PathVariable Long workoutId) {
+        return exercisePerformedService.addExerciseToWorkout(exercisePerformed, workoutId);
     }
 }

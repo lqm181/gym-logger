@@ -17,7 +17,7 @@ public class ExercisePerformed {
     @JoinColumn(name = "workout_id")
     private Workout workout;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "exercise_id")
     private Exercise exercise;
 

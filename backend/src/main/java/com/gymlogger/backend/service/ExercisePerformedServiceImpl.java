@@ -16,7 +16,7 @@ public class ExercisePerformedServiceImpl implements ExercisePerformedService {
     WorkoutRepository workoutRepository;
 
     @Override
-    public void addExerciseToWorkout(ExercisePerformed exercisePerformed, Long workoutId) {
+    public ExercisePerformed addExerciseToWorkout(ExercisePerformed exercisePerformed, Long workoutId) {
         Workout workoutRef = workoutRepository.getReferenceById(workoutId);
 
         exercisePerformed.setWorkout(workoutRef);
@@ -26,6 +26,6 @@ public class ExercisePerformedServiceImpl implements ExercisePerformedService {
             }
         }
 
-        exercisePerformedRepository.save(exercisePerformed);
+        return exercisePerformedRepository.save(exercisePerformed);
     }
 }
