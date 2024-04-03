@@ -14,7 +14,7 @@ public class ExerciseSetController {
 
     @PostMapping("/performed-exercises/{performedExerciseId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ExerciseSet addNewSet(@RequestBody ExerciseSet exerciseSet, @PathVariable Long performedExerciseId) {
+    public ExerciseSet createNewSet(@RequestBody ExerciseSet exerciseSet, @PathVariable Long performedExerciseId) {
         return exerciseSetService.addSetToExercise(exerciseSet, performedExerciseId);
     }
 
