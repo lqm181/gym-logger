@@ -16,16 +16,16 @@ const styles = StyleSheet.create({
     // borderColor: COLORS.gray,
     // borderBottomWidth: 0.5,
   },
-  labelStyle: {
-    fontWeight: FONTWEIGHT.semibold,
-    fontSize: SIZES.medium,
-    // color: COLORS.primary,
-  },
-  inputContainer: {
+  containerRow: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    gap: 6,
+    gap: 24,
+  },
+
+  inputContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 24,
   },
   inputBase: {
     height: 35,
@@ -35,16 +35,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
   },
   setInput: {
-    flex: 2,
+    flex: 1,
   },
 
   repInput: {
     flex: 1,
   },
   noteInput: {
-    flex: 7,
-    height: 'auto',
-    maxHeight: 90,
+    flex: 1,
+    height: 90,
   },
   actionsContainer: {
     display: 'flex',
@@ -53,6 +52,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 16,
+  },
+  inputLabel: {
+    fontSize: SIZES.normal,
+    fontWeight: FONTWEIGHT.bold,
+    marginBottom: 5,
   },
 });
 

@@ -83,14 +83,14 @@ const AddExerciseModal = ({
       <View style={styles.centeredView}>
         <View style={styles.modalContainer}>
           {/* Title */}
-          <Text style={styles.title}>Add a new exercise</Text>
+          <Text style={styles.title}>Start A New Exercise</Text>
 
           {/* Content */}
-          <ScrollView>
+          <ScrollView automaticallyAdjustKeyboardInsets>
             <Select
               selectContainerStyle={{
-                marginTop: 4,
-                marginBottom: 32,
+                marginTop: 8,
+                marginBottom: 8,
               }}
               data={options}
               value={newExercise?.id.toString()}
@@ -104,7 +104,7 @@ const AddExerciseModal = ({
                 }));
               }}
               placeholder='Select an exercise'
-              selectLabel='Your exercise'
+              selectLabel='Exercise Name'
               search
               searchPlaceholder='Search...'
               showsVerticalScrollIndicator
@@ -127,9 +127,8 @@ const AddExerciseModal = ({
                 color='primary'
                 disabled={isLoading}
                 onPress={handleAddExercise}
-                style={{ width: 'auto' }}
               >
-                {isLoading ? 'Adding...' : 'Save'}
+                {isLoading ? 'Saving...' : 'Save'}
               </Button>
             </View>
           </View>
