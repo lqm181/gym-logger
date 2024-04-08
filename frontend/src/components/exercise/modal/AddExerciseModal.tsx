@@ -1,4 +1,4 @@
-import { View, Text, Modal, ScrollView } from 'react-native';
+import { View, Text, Modal, ScrollView, Alert } from 'react-native';
 import React, { useState } from 'react';
 import styles from '../exercise.style';
 import { useRouter } from 'expo-router';
@@ -33,13 +33,22 @@ const AddExerciseModal = ({
   const { data, isLoading, error, fetchData } = useDataFetcher();
 
   const handleAddExercise = async () => {
-    // TODO: Contact backend API to save the acercise
+    // TODO: Contact backend API to save the exercise
     // TODO: Add methods for adding the new exercise to workout list
     // TODO: Provide the workout Id
     const workoutId = 9;
 
-    console.log('before fetch', newSet, newExercise);
-    if (newSet && newExercise) {
+    if (!newExercise) {
+      Alert.alert('Error', 'Please chose your exercise.');
+    } else if (
+      !newSet ||
+      newSet?.weight == null ||
+      newSet?.weight == undefined ||
+      newSet?.reps == undefined ||
+      newSet?.reps == null
+    ) {
+      Alert.alert('Error', 'Please enter the weight and reps of your set.');
+    } else {
       await fetchData(
         `${BACKEND_API_URL}/performed-exercises/workouts/${workoutId}`,
         {
@@ -62,14 +71,10 @@ const AddExerciseModal = ({
           },
         }
       );
-    } else {
-      // TODO: Give feed back to user by toast/text/alert
-      throw new Error('You must choose your exercise and input your set.');
+      setNewExercise(null);
+      setNewSet(null);
+      onCloseModal();
     }
-
-    console.log('fetch data', data);
-
-    onCloseModal();
   };
 
   const closeModal = () => {
