@@ -1,11 +1,22 @@
 import { View, Text } from 'react-native';
-import React from 'react';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { AddExerciseButton, AddExerciseModal, Button } from '@/src/components';
 
 const LogDetailScreen = () => {
-  const { date } = useLocalSearchParams();
+  const { date, id } = useLocalSearchParams();
   const router = useRouter();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    /* Dynamically set the title for each log */
+    if (navigation) {
+      navigation.setOptions({
+        title: date,
+      });
+    }
+  }, [navigation, date]);
+
   return (
     <View>
       <Text>LogDetailScreen for {date}</Text>

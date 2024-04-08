@@ -9,18 +9,35 @@ import React, { useEffect, useState } from 'react';
 import styles from './setinput.style';
 import Input from '../../common/input/Input';
 import { Button } from '../../common/button';
+import { ExerciseSet } from '@/src/types';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 interface SetInputProps {
   action?: 'add' | 'update';
+  onEndEditing?: (newValue: ExerciseSet) => void;
+  initialValue?: ExerciseSet;
 }
 
-const SetInput = ({ action = 'add' }: SetInputProps) => {
+const SetInput = ({
+  action = 'add',
+  onEndEditing,
+  initialValue,
+}: SetInputProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [data, setData] = useState({
-    weight: '',
-    numReps: '',
-    note: '',
+  const [input, setInput] = useState<ExerciseSet | null>({
+    id: uuidv4(),
   });
+
+  if (initialValue) {
+    setInput(initialValue);
+  }
+
+  const handleEditingEnd = () => {
+    if (onEndEditing && input) {
+      onEndEditing(input);
+    }
+  };
 
   const onHandleSave = () => {
     setIsEditing(false);
@@ -36,33 +53,45 @@ const SetInput = ({ action = 'add' }: SetInputProps) => {
       <View style={styles.inputContainer}>
         <Input
           id='weight'
+          defaultValue=''
           style={[styles.setInput]}
-          placeholder='50'
+          placeholder='0'
           keyboardType='numeric'
-          value={data.weight}
-          onChangeText={(text) =>
-            setData((prev) => ({ ...prev, weight: text }))
-          }
+          value={input?.weight?.toString()}
+          onChangeText={(text) => {
+            if (!isNaN(parseFloat(text))) {
+              setInput((prev) => ({ ...prev, weight: parseFloat(text) }));
+            } else if (text === '') {
+              setInput((prev) => ({ ...prev, weight: undefined }));
+            }
+          }}
+          onEndEditing={handleEditingEnd}
         />
-
         <Input
           style={[styles.repInput]}
-          placeholder='12'
+          placeholder='0'
+          defaultValue=''
           keyboardType='decimal-pad'
           inputMode='decimal'
-          value={data.numReps}
-          onChangeText={(text) =>
-            setData((prev) => ({ ...prev, numReps: text }))
-          }
+          value={input?.reps?.toString()}
+          onChangeText={(text) => {
+            if (!isNaN(parseFloat(text))) {
+              setInput((prev) => ({ ...prev, reps: parseFloat(text) }));
+            } else {
+              setInput((prev) => ({ ...prev, reps: undefined }));
+            }
+          }}
+          onEndEditing={handleEditingEnd}
         />
         <Input
           style={[styles.noteInput]}
-          placeholder='Note'
+          placeholder='Your Note'
           multiline
           numberOfLines={4}
           textAlignVertical='top'
-          value={data.note}
-          onChangeText={(text) => setData((prev) => ({ ...prev, note: text }))}
+          value={input?.note ?? ''}
+          onChangeText={(text) => setInput((prev) => ({ ...prev, note: text }))}
+          onEndEditing={handleEditingEnd}
         />
       </View>
 

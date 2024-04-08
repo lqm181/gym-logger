@@ -5,19 +5,14 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { DropdownProps } from 'react-native-element-dropdown/lib/typescript/components/Dropdown/model';
 import { COLORS } from '@/src/constants';
 
-interface OptionProps {
-  value: any;
-  label: string;
-}
-
-interface SelectProps extends DropdownProps<OptionProps> {
+interface SelectProps<T> extends DropdownProps<T> {
   selectLabel?: string;
   selectContainerStyle?: ViewStyle;
   labelStyle?: TextStyle;
   color?: ColorValue;
 }
 
-const Select = ({
+const Select = <T,>({
   selectLabel,
   placeholder,
   value,
@@ -25,7 +20,7 @@ const Select = ({
   labelStyle,
   color,
   ...dropdownProps
-}: SelectProps) => {
+}: SelectProps<T>) => {
   //   const [selectedValue, setSelectedValue] = useState('');
   const [isFocus, setIsFocus] = useState(false);
 

@@ -4,17 +4,19 @@ import styles from '../exercise.style';
 import { useRouter } from 'expo-router';
 import { Select } from '../../common/select';
 import { Button } from '../../common/button';
-import { COLORS } from '@/src/constants';
+import { BACKEND_API_URL, COLORS } from '@/src/constants';
 import SetInput from '../input/SetInput';
+import useDataFetcher from '@/src/hooks/useDataFetcher';
+import { Exercise, ExerciseSet } from '@/src/types';
 
 const options = [
-  { label: 'Bench Press', value: 'Bench Press' },
-  { label: 'Bicep Curl', value: 'Bicep Curl' },
-  { label: 'Deadlift', value: 'Deadlift' },
-  { label: 'Lat Pulldown', value: 'Lat Pulldown' },
-  { label: 'Lateral Raise', value: 'Lateral Raise' },
-  { label: 'Pullup', value: 'Pullup' },
-];
+  { name: 'Bench Press', id: 1 },
+  { name: 'Bicep Curl', id: 2 },
+  { name: 'Deadlift', id: 3 },
+  { name: 'Lat Pulldown', id: 4 },
+  { name: 'Lateral Raise', id: 5 },
+  { name: 'Pullup', id: 6 },
+] as Exercise[];
 
 interface AddExerciseModalProps {
   isVisible: boolean;
@@ -25,28 +27,53 @@ const AddExerciseModal = ({
   isVisible,
   onCloseModal,
 }: AddExerciseModalProps) => {
-  const [currentSet, setCurrentSet] = useState(null);
-  const [newExercise, setNewExercise] = useState({
-    name: undefined,
-    numReps: undefined,
-    weight: undefined,
-    note: undefined,
-  });
-  const [isAdding, setIsAdding] = useState(false);
+  const [newSet, setNewSet] = useState<ExerciseSet | null>();
+  const [newExercise, setNewExercise] = useState<Exercise | null>();
+
+  const { data, isLoading, error, fetchData } = useDataFetcher();
 
   const handleAddExercise = async () => {
-    setIsAdding(true);
-
     // TODO: Contact backend API to save the acercise
-    console.log('Adding..');
-    await new Promise((r) => setTimeout(r, 3000));
-    console.log('Added');
-    setIsAdding(false);
+    // TODO: Add methods for adding the new exercise to workout list
+    // TODO: Provide the workout Id
+    const workoutId = 9;
+
+    console.log('before fetch', newSet, newExercise);
+    if (newSet && newExercise) {
+      await fetchData(
+        `${BACKEND_API_URL}/performed-exercises/workouts/${workoutId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: {
+            exercise: {
+              id: newExercise?.id,
+            },
+            exerciseSets: [
+              {
+                weight: newSet.weight ?? 0,
+                reps: newSet.reps ?? 0,
+                note: newSet.note ?? null,
+                created_at: new Date(),
+              },
+            ],
+          },
+        }
+      );
+    } else {
+      // TODO: Give feed back to user by toast/text/alert
+      throw new Error('You must choose your exercise and input your set.');
+    }
+
+    console.log('fetch data', data);
+
     onCloseModal();
   };
 
   const closeModal = () => {
-    setCurrentSet(null);
+    setNewSet(null);
 
     onCloseModal();
   };
@@ -66,11 +93,15 @@ const AddExerciseModal = ({
                 marginBottom: 32,
               }}
               data={options}
-              value={newExercise.name}
-              labelField='label'
-              valueField='value'
+              value={newExercise?.id.toString()}
+              labelField='name'
+              valueField='id'
               onChange={(item) => {
-                setNewExercise((prev) => ({ ...prev, name: item.value }));
+                setNewExercise((prev) => ({
+                  ...prev,
+                  id: item.id,
+                  name: item.name,
+                }));
               }}
               placeholder='Select an exercise'
               selectLabel='Your exercise'
@@ -82,7 +113,7 @@ const AddExerciseModal = ({
                 borderRadius: 8,
               }}
             />
-            <SetInput />
+            <SetInput onEndEditing={(newValue) => setNewSet(newValue)} />
           </ScrollView>
 
           {/* Actions */}
@@ -94,11 +125,11 @@ const AddExerciseModal = ({
               <Button
                 variant='contained'
                 color='primary'
-                disabled={isAdding}
+                disabled={isLoading}
                 onPress={handleAddExercise}
                 style={{ width: 'auto' }}
               >
-                {isAdding ? 'Adding...' : 'Save'}
+                {isLoading ? 'Adding...' : 'Save'}
               </Button>
             </View>
           </View>
