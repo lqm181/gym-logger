@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: FONTWEIGHT.bold,
     fontSize: SIZES.xLarge,
+    paddingBottom: 8,
   },
   modelActions: {
     display: 'flex',

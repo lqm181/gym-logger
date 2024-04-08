@@ -94,8 +94,7 @@ const AddExerciseModal = ({
           <ScrollView automaticallyAdjustKeyboardInsets>
             <Select
               selectContainerStyle={{
-                marginTop: 8,
-                marginBottom: 8,
+                marginBottom: 24,
               }}
               data={options}
               value={newExercise?.id.toString()}
