@@ -4,6 +4,7 @@ import com.gymlogger.backend.model.User;
 import com.gymlogger.backend.model.Workout;
 import com.gymlogger.backend.repository.UserRepository;
 import com.gymlogger.backend.repository.WorkoutRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,5 +31,10 @@ public class WorkoutServiceImpl implements WorkoutService {
     @Override
     public List<Workout> getAllWorkoutsOfUser(Long userId) {
         return workoutRepository.findAllByUserId(userId);
+    }
+
+    @Override
+    public Workout getWorkoutById(Long id) {
+        return workoutRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Workout not found."));
     }
 }

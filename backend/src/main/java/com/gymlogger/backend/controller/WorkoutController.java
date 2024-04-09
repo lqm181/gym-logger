@@ -24,4 +24,9 @@ public class WorkoutController {
     public List<Workout> getAllWorkouts(@PathVariable Long userId) {
         return workoutService.getAllWorkoutsOfUser(userId);
     }
+
+    @GetMapping("/{id}")
+    public Workout getOneWorkout(@PathVariable Long id) {
+        return workoutService.getWorkoutById(id);
+    }
 }

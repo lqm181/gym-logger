@@ -8,4 +8,6 @@ public interface WorkoutService {
     Workout addWorkoutToUser(Long userId, Workout workout);
 
     List<Workout> getAllWorkoutsOfUser(Long userId);
+
+    Workout getWorkoutById(Long id);
 }
