@@ -17,3 +17,10 @@ export interface ExercisePerformed {
   exercise: Exercise;
   exerciseSets: ExerciseSet[];
 }
+
+export interface Workout {
+  id: number | string;
+  title: string;
+  performedExercises: ExercisePerformed[];
+  created_at?: Date;
+}

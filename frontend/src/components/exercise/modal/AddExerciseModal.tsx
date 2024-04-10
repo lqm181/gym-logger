@@ -1,7 +1,6 @@
 import { View, Text, Modal, ScrollView, Alert } from 'react-native';
 import React, { useState } from 'react';
-import styles from '../exercise.style';
-import { useRouter } from 'expo-router';
+import styles from './exercise.style';
 import { Select } from '../../common/select';
 import { Button } from '../../common/button';
 import { BACKEND_API_URL, COLORS } from '@/src/constants';

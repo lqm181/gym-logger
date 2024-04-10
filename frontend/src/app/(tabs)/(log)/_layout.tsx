@@ -5,7 +5,7 @@ import { Stack } from 'expo-router';
 const _layout = () => {
   return (
     <Stack>
-      <Stack.Screen name='[date]' options={{}} />
+      <Stack.Screen name='[title]' options={{}} />
     </Stack>
   );
 };

@@ -4,8 +4,8 @@ interface FetchOptions extends RequestInit {
   body?: any;
 }
 
-const useDataFetcher = () => {
-  const [data, setData] = useState(null);
+const useDataFetcher = <T>() => {
+  const [data, setData] = useState<T>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 

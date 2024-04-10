@@ -6,12 +6,13 @@ import { BACKEND_API_URL, COLORS, SIZES } from '@/src/constants';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from '@/src/components';
 import { FlashList } from '@shopify/flash-list';
+import { Workout } from '@/src/types';
 
 const LogsScreen = () => {
   // TODO: Change userId
   // TODO: remove all console.logs
   const userId = 1;
-  const { data, isLoading, error, fetchData } = useDataFetcher();
+  const { data, isLoading, error, fetchData } = useDataFetcher<Workout[]>();
 
   useEffect(() => {
     fetchData(`${BACKEND_API_URL}/workouts/users/${userId}`);
@@ -87,31 +88,24 @@ const LogsScreen = () => {
         </Button>
       </View>
     );
+  console.log(data);
 
   return (
     <View>
       <Text>Display all logs</Text>
-      <Link
-        href={{
-          pathname: '/(tabs)/(log)/[date]',
-          params: { date: '3/27/2024', id: 9 },
-        }}
-      >
-        3/27/2024
-      </Link>
-      <Link
-        href={{
-          pathname: '/(tabs)/(log)/[date]',
-          params: { date: '3/26/2024', id: 9 },
-        }}
-      >
-        3/26/2024
-      </Link>
-
       <View style={{ minHeight: 200 }}>
         <FlashList
-          renderItem={({ item }: { item: any }) => {
-            return <Text>{item.id}</Text>;
+          renderItem={({ item }: { item: Workout }) => {
+            return (
+              <Link
+                href={{
+                  pathname: '/(tabs)/(log)/[title]',
+                  params: { title: item.title, id: item.id },
+                }}
+              >
+                {item.title}
+              </Link>
+            );
           }}
           data={data}
           estimatedItemSize={200}
