@@ -3,8 +3,8 @@ import React from 'react';
 import { ExercisePerformed } from '@/src/types';
 import styles from './exerciseCard.style';
 import { getTotalVolume } from '@/src/utils/exerciseUtils';
-import IconButton from '../../common/IconButton';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import PopoverMenu from '../../common/menu/PopoverMenu';
 
 interface ExerciseCardProps {
   data: ExercisePerformed;
@@ -20,15 +20,7 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
             Total volumne: {getTotalVolume(data)}
           </Text>
         </View>
-        <View>
-          <IconButton size={24}>
-            <MaterialCommunityIcons
-              name='dots-horizontal'
-              size={24}
-              color='gray'
-            />
-          </IconButton>
-        </View>
+        <View></View>
       </View>
 
       {data.exerciseSets.length <= 0 ? (
@@ -40,6 +32,7 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
             <Text style={[styles.tableHeader, styles.mediumCell]}>Weight</Text>
             <Text style={[styles.tableHeader, styles.mediumCell]}>Rep</Text>
             <Text style={[styles.tableHeader, styles.largeCell]}>Note</Text>
+            <Text style={[styles.tableHeader, styles.smallCell]}></Text>
           </View>
           {data.exerciseSets.map((exerciseSet, index) => (
             <View key={index} style={styles.tableRow}>
@@ -55,6 +48,22 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
               <Text style={[styles.tableCell, styles.largeCell]}>
                 {exerciseSet.note}
               </Text>
+              <View>
+                <PopoverMenu
+                  options={[
+                    {
+                      name: 'Edit',
+                      icon: <Ionicons name='pencil' size={20} color='black' />,
+                    },
+                    {
+                      name: <Text style={{ color: 'red' }}>Delete</Text>,
+                      icon: (
+                        <Ionicons name='trash-outline' size={20} color='red' />
+                      ),
+                    },
+                  ]}
+                />
+              </View>
             </View>
           ))}
         </View>

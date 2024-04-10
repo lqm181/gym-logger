@@ -4,7 +4,7 @@ import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: 'white',
-    padding: 12,
+    padding: 8,
     borderRadius: 12,
     marginTop: 24,
   },
@@ -23,10 +23,14 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
     fontSize: SIZES.small,
   },
-  tableContainer: { display: 'flex', flexDirection: 'column', padding: 4 },
+  tableContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   tableRow: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 4,
   },
   tableCell: {
