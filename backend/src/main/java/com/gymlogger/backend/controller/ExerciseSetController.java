@@ -18,4 +18,9 @@ public class ExerciseSetController {
         return exerciseSetService.addSetToExercise(exerciseSet, performedExerciseId);
     }
 
+    @PutMapping("/{id}")
+    public ExerciseSet updateSet(@RequestBody ExerciseSet newSet, @PathVariable Long id) {
+        return exerciseSetService.updateSetById(newSet, id);
+    }
+
 }
