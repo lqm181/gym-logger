@@ -8,6 +8,7 @@ import SetInput from '../input/SetInput';
 import useDataFetcher from '@/src/hooks/useDataFetcher';
 import { Exercise, ExerciseSet } from '@/src/types';
 
+// TODO: Add methods to fetch all options
 const options = [
   { name: 'Bench Press', id: 1 },
   { name: 'Bicep Curl', id: 2 },

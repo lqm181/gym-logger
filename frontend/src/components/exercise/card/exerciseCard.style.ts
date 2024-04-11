@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 4,
+    paddingVertical: 4,
   },
   tableCell: {
     fontSize: SIZES.normal,
@@ -49,6 +50,9 @@ const styles = StyleSheet.create({
   tableHeader: {
     fontSize: SIZES.small,
     color: 'gray',
+  },
+  tableAction: {
+    width: 24,
   },
 });
 

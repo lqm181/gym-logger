@@ -8,11 +8,8 @@ import {
   MenuOption,
   MenuOptions,
   MenuTrigger,
-  renderers,
 } from 'react-native-popup-menu';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FlashList } from '@shopify/flash-list';
-import { COLORS, FONTWEIGHT, SIZES } from '@/src/constants';
 
 interface OptionProps {
   name: string | ReactNode;
@@ -37,7 +34,14 @@ const Divider = () => (
 const PopoverMenu = ({ options, title }: PopoverMenuProps) => {
   return (
     <Menu>
-      <MenuTrigger>
+      <MenuTrigger
+        customStyles={{
+          triggerOuterWrapper: {
+            borderRadius: 24,
+            overflow: 'hidden',
+          },
+        }}
+      >
         <MaterialCommunityIcons name='dots-vertical' size={24} color='gray' />
       </MenuTrigger>
       <MenuOptions

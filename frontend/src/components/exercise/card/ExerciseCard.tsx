@@ -34,7 +34,7 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
             <Text style={[styles.tableHeader, styles.mediumCell]}>Weight</Text>
             <Text style={[styles.tableHeader, styles.mediumCell]}>Rep</Text>
             <Text style={[styles.tableHeader, styles.largeCell]}>Note</Text>
-            <Text style={[styles.tableHeader, styles.smallCell]}></Text>
+            <Text style={[styles.tableAction]}></Text>
           </View>
           {data.exerciseSets.map((exerciseSet, index) => (
             <View key={index} style={styles.tableRow}>
@@ -50,7 +50,7 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
               <Text style={[styles.tableCell, styles.largeCell]}>
                 {exerciseSet.note}
               </Text>
-              <View>
+              <View style={[styles.tableAction]}>
                 <PopoverMenu
                   options={[
                     {
@@ -74,7 +74,7 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
       {/* Card Action */}
       <View
         style={{
-          marginTop: 16,
+          marginTop: 24,
         }}
       >
         <AddSetButton performedExerciseId={data.id} />
