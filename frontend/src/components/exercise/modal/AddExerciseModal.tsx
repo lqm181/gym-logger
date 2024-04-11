@@ -120,20 +120,18 @@ const AddExerciseModal = ({
           </ScrollView>
 
           {/* Actions */}
-          <View>
-            <View style={styles.modelActions}>
-              <Button variant='outlined' color='error' onPress={closeModal}>
-                Cancel
-              </Button>
-              <Button
-                variant='contained'
-                color='primary'
-                disabled={isLoading}
-                onPress={handleAddExercise}
-              >
-                {isLoading ? 'Saving...' : 'Save'}
-              </Button>
-            </View>
+          <View style={styles.modelActions}>
+            <Button variant='outlined' color='error' onPress={closeModal}>
+              Cancel
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              disabled={isLoading}
+              onPress={handleAddExercise}
+            >
+              {isLoading ? 'Saving...' : 'Save'}
+            </Button>
           </View>
         </View>
       </View>

@@ -9,8 +9,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   modalContainer: {
-    height: '50%',
     width: '95%',
+    maxHeight: 600,
+    minHeight: 300,
     borderRadius: 18,
     elevation: 3,
     backgroundColor: COLORS.lightWhite,
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     flexDirection: 'row',
     gap: 12,
+    marginTop: 36,
   },
 });
 

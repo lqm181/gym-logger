@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     fontSize: SIZES.medium, // 16
-    width: 100,
+    minWidth: 100,
   },
 
   textContainedBase: {

@@ -13,7 +13,7 @@ export interface Exercise {
 }
 
 export interface ExercisePerformed {
-  id: string;
+  id: string | number;
   exercise: Exercise;
   exerciseSets: ExerciseSet[];
 }

@@ -4,15 +4,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
-    backgroundColor: COLORS.lightWhite,
-    // elevation: 1,
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 0 },
-    // shadowOpacity: 0.1,
-    // shadowRadius: 5,
-    // borderTopWidth: 0.5,
-    // borderColor: COLORS.gray,
-    // borderBottomWidth: 0.5,
+    backgroundColor: 'transparent',
   },
   containerRow: {
     display: 'flex',

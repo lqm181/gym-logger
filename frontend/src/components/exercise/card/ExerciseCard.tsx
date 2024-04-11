@@ -5,6 +5,7 @@ import styles from './exerciseCard.style';
 import { getTotalVolume } from '@/src/utils/exerciseUtils';
 import { Ionicons } from '@expo/vector-icons';
 import PopoverMenu from '../../common/menu/PopoverMenu';
+import AddSetButton from '../button/AddSetButton';
 
 interface ExerciseCardProps {
   data: ExercisePerformed;
@@ -23,6 +24,7 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
         <View></View>
       </View>
 
+      {/* Card Content */}
       {data.exerciseSets.length <= 0 ? (
         <Text>You have not start any set for this exercise.</Text>
       ) : (
@@ -68,6 +70,15 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
           ))}
         </View>
       )}
+
+      {/* Card Action */}
+      <View
+        style={{
+          marginTop: 16,
+        }}
+      >
+        <AddSetButton performedExerciseId={data.id} />
+      </View>
     </View>
   );
 };

@@ -17,11 +17,12 @@ const AddExerciseButton = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingHorizontal: 12,
       }}
     >
       {!isAdding && (
         <Button
-          style={{ width: 200 }}
+          style={{ width: '100%' }}
           variant='contained'
           color='primary'
           onPress={handleAddNewExercise}

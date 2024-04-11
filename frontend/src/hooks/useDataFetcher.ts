@@ -22,6 +22,9 @@ const useDataFetcher = <T>() => {
         body: options.body ? JSON.stringify(options.body) : null,
       });
 
+      if (!response.ok)
+        throw new Error('An error has occurred. Please try again.');
+
       const jsonData = await response.json();
       setData(jsonData);
     } catch (error) {
