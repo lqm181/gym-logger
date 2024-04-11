@@ -35,7 +35,7 @@ const AddSetModal = ({
       Alert.alert('Error', 'Please enter the weight and reps of your set.');
     } else {
       await fetchData(
-        `${BACKEND_API_URL}/exercise-set/performed-exercises/${performedExerciseId}`,
+        `${BACKEND_API_URL}/exercise-sets/performed-exercises/${performedExerciseId}`,
         {
           method: 'POST',
           headers: {
