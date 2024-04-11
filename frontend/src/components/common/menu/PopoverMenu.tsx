@@ -68,6 +68,7 @@ const PopoverMenu = ({ options, title }: PopoverMenuProps) => {
             renderItem={({ item }) => (
               <View>
                 <MenuOption
+                  onSelect={item.onPress}
                   customStyles={{
                     optionWrapper: styles.optionWrapper,
                   }}

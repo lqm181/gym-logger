@@ -1,49 +1,31 @@
-import {
-  View,
-  Text,
-  TextInput,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
-  TouchableOpacity,
-  Keyboard,
-} from 'react-native';
+import { View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styles from './setinput.style';
 import Input from '../../common/input/Input';
-import { Button } from '../../common/button';
 import { ExerciseSet } from '@/src/types';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { FontAwesome6 } from '@expo/vector-icons';
 
 interface SetInputProps {
-  action?: 'add' | 'update';
   onEndEditing?: (newValue: ExerciseSet) => void;
   initialValue?: ExerciseSet;
 }
 
-const SetInput = ({
-  action = 'add',
-  onEndEditing,
-  initialValue,
-}: SetInputProps) => {
-  const [isEditing, setIsEditing] = useState(false);
+const SetInput = ({ onEndEditing, initialValue }: SetInputProps) => {
   const [input, setInput] = useState<ExerciseSet | null>({
     id: uuidv4(),
   });
 
-  if (initialValue) {
-    setInput(initialValue);
-  }
+  useEffect(() => {
+    if (initialValue) {
+      setInput(initialValue);
+    }
+  }, [initialValue]);
 
   const handleEditingEnd = () => {
     if (onEndEditing && input) {
       onEndEditing(input);
     }
-  };
-
-  const onHandleSave = () => {
-    setIsEditing(false);
   };
 
   return (
@@ -108,17 +90,6 @@ const SetInput = ({
           />
         </View>
       </View>
-
-      {action === 'update' && (
-        <View style={styles.actionsContainer}>
-          <Button variant='outlined' color='error'>
-            Delete
-          </Button>
-          <Button variant='contained' color='success'>
-            Save
-          </Button>
-        </View>
-      )}
     </View>
   );
 };

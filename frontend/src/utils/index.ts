@@ -1,3 +1,3 @@
-import { getTotalVolume } from './exerciseUtils';
+import { getTotalVolume, isValidSet } from './exerciseUtils';
 
-export default { getTotalVolume };
+export default { getTotalVolume, isValidSet };
