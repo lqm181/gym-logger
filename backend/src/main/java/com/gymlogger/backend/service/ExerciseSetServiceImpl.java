@@ -40,4 +40,9 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
 
         return exerciseSetRepository.save(exerciseSet);
     }
+
+    @Override
+    public void deleteSetById(Long id) {
+        exerciseSetRepository.deleteById(id);
+    }
 }

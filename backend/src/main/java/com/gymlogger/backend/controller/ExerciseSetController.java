@@ -23,4 +23,8 @@ public class ExerciseSetController {
         return exerciseSetService.updateSetById(newSet, id);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteSet(@PathVariable Long id) {
+        exerciseSetService.deleteSetById(id);
+    }
 }
