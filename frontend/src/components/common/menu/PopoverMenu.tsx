@@ -10,6 +10,7 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import ListDivider from '../ListDivider';
 
 interface OptionProps {
   name: string | ReactNode;
@@ -21,15 +22,6 @@ interface PopoverMenuProps {
   options: OptionProps[];
   title?: string;
 }
-
-const Divider = () => (
-  <View
-    style={{
-      height: StyleSheet.hairlineWidth,
-      backgroundColor: 'lightgray',
-    }}
-  />
-);
 
 const PopoverMenu = ({ options, title }: PopoverMenuProps) => {
   return (
@@ -59,12 +51,12 @@ const PopoverMenu = ({ options, title }: PopoverMenuProps) => {
               >
                 <Text style={styles.titleText}>{title}</Text>
               </MenuOption>
-              <Divider />
+              <ListDivider />
             </>
           )}
           <FlatList
             data={options}
-            ItemSeparatorComponent={() => <Divider />}
+            ItemSeparatorComponent={() => <ListDivider />}
             renderItem={({ item }) => (
               <View>
                 <MenuOption

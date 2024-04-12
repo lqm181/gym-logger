@@ -1,12 +1,13 @@
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
 import React, { useEffect } from 'react';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import useDataFetcher from '@/src/hooks/useDataFetcher';
-import { BACKEND_API_URL, COLORS, SIZES } from '@/src/constants';
+import { BACKEND_API_URL, COLORS, FONTWEIGHT, SIZES } from '@/src/constants';
 import { Ionicons } from '@expo/vector-icons';
-import { Button } from '@/src/components';
+import { Button, ListDivider, WorkoutPreview } from '@/src/components';
 import { FlashList } from '@shopify/flash-list';
 import { Workout } from '@/src/types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LogsScreen = () => {
   // TODO: Change userId
@@ -91,27 +92,66 @@ const LogsScreen = () => {
   console.log(data);
 
   return (
-    <View>
-      <Text>Display all logs</Text>
-      <View style={{ minHeight: 200 }}>
-        <FlashList
-          renderItem={({ item }: { item: Workout }) => {
-            return (
-              <Link
-                href={{
-                  pathname: '/(tabs)/(log)/[title]',
-                  params: { title: item.title, id: item.id },
+    <SafeAreaView
+      style={{
+        padding: 8,
+        flex: 1,
+        height: '100%',
+      }}
+    >
+      <ScrollView style={{ minHeight: 200 }}>
+        <Text
+          style={{
+            fontSize: SIZES.xxLarge,
+            fontWeight: FONTWEIGHT.bold,
+            marginBottom: 12,
+          }}
+        >
+          Workout History
+        </Text>
+        <View
+          style={{
+            borderRadius: 12,
+            overflow: 'hidden',
+          }}
+        >
+          <FlashList
+            ItemSeparatorComponent={() => (
+              <ListDivider
+                style={{
+                  marginHorizontal: 8,
+                }}
+              />
+            )}
+            renderItem={({ item }: { item: Workout }) => {
+              return <WorkoutPreview workoutData={item} />;
+            }}
+            data={data}
+            estimatedItemSize={200}
+            ListEmptyComponent={() => (
+              <View
+                style={{
+                  flex: 1,
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
               >
-                {item.title}
-              </Link>
-            );
-          }}
-          data={data}
-          estimatedItemSize={200}
-        />
-      </View>
-    </View>
+                <Text
+                  style={{
+                    color: COLORS.gray,
+                    fontSize: SIZES.medium,
+                    fontWeight: FONTWEIGHT.semibold,
+                  }}
+                >
+                  Get started with a workout.
+                </Text>
+              </View>
+            )}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

@@ -11,14 +11,14 @@ import { MenuProvider } from 'react-native-popup-menu';
 import { Ionicons } from '@expo/vector-icons';
 
 const LogDetailScreen = () => {
-  const { title, id } = useLocalSearchParams();
+  const { title, workoutId } = useLocalSearchParams();
   const router = useRouter();
   const { data, isLoading, error, fetchData } = useDataFetcher<Workout>();
 
   useEffect(() => {
     /* Dynamically set the title for each log */
     // TODO: Fetch workout information
-    fetchData(`${BACKEND_API_URL}/workouts/${id}`);
+    fetchData(`${BACKEND_API_URL}/workouts/${workoutId}`);
   }, [title]);
 
   return (
