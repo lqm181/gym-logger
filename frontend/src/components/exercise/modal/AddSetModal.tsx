@@ -1,12 +1,11 @@
 import { View, Text, Modal, ScrollView, Alert } from 'react-native';
 import React, { useState } from 'react';
 import styles from './exercise.style';
-import { Select } from '../../common/select';
 import { Button } from '../../common/button';
-import { BACKEND_API_URL, COLORS } from '@/src/constants';
+import { BACKEND_API_URL } from '@/src/constants';
 import SetInput from '../input/SetInput';
 import useDataFetcher from '@/src/hooks/useDataFetcher';
-import { Exercise, ExerciseSet } from '@/src/types';
+import { ExerciseSet } from '@/src/types';
 
 interface AddSetModalProps {
   isVisible: boolean;

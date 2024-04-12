@@ -5,7 +5,13 @@ import { Stack } from 'expo-router';
 const _layout = () => {
   return (
     <Stack>
-      <Stack.Screen name='[title]' options={{}} />
+      <Stack.Screen
+        name='[title]'
+        options={{
+          title: 'Workout Detail',
+          headerTitleAlign: 'center',
+        }}
+      />
     </Stack>
   );
 };

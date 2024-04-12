@@ -1,13 +1,12 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import React, { useState } from 'react';
 import { Button } from '../../common/button';
 import AddExerciseModal from '../modal/AddExerciseModal';
+import { SIZES } from '@/src/constants';
 
 const AddExerciseButton = () => {
-  const [isAdding, setIsAdding] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const handleAddNewExercise = () => {
-    // setIsAdding(true);
     setIsModalVisible(true);
   };
 
@@ -17,19 +16,25 @@ const AddExerciseButton = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 12,
       }}
     >
-      {!isAdding && (
-        <Button
-          style={{ width: '100%' }}
-          variant='contained'
-          color='primary'
-          onPress={handleAddNewExercise}
-        >
-          Add New Exercise
-        </Button>
-      )}
+      <Button
+        style={{
+          width: 'auto',
+          minWidth: 0,
+          paddingHorizontal: 0,
+          borderWidth: 0,
+          backgroundColor: 'transparent',
+        }}
+        variant='outlined'
+        color='primary'
+        textProps={{
+          fontSize: SIZES.medium,
+        }}
+        onPress={handleAddNewExercise}
+      >
+        Add
+      </Button>
 
       <AddExerciseModal
         isVisible={isModalVisible}

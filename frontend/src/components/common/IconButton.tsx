@@ -20,7 +20,6 @@ const IconButton = ({
   return (
     <TouchableOpacity
       style={{
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         width: size,

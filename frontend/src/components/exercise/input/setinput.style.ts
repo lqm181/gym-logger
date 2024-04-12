@@ -1,4 +1,4 @@
-import { COLORS, FONTWEIGHT, SIZES } from '@/src/constants';
+import { FONTWEIGHT, SIZES } from '@/src/constants';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 24,
+    paddingHorizontal: 1,
   },
   inputBase: {
     height: 35,

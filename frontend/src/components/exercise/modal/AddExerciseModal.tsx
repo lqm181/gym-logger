@@ -88,7 +88,7 @@ const AddExerciseModal = ({
       <View style={styles.centeredView}>
         <View style={styles.modalContainer}>
           {/* Title */}
-          <Text style={styles.title}>Start A New Exercise</Text>
+          <Text style={styles.title}>Add a new exercise</Text>
 
           {/* Content */}
           <ScrollView automaticallyAdjustKeyboardInsets>
@@ -131,7 +131,7 @@ const AddExerciseModal = ({
               disabled={isLoading}
               onPress={handleAddExercise}
             >
-              {isLoading ? 'Saving...' : 'Save'}
+              {isLoading ? 'Adding...' : 'Add'}
             </Button>
           </View>
         </View>

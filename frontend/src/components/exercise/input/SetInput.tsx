@@ -29,66 +29,62 @@ const SetInput = ({ onEndEditing, initialValue }: SetInputProps) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <View style={styles.containerRow}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.inputLabel}>Weight</Text>
-            <Input
-              id='weight'
-              variant='outlined'
-              defaultValue=''
-              placeholder='Weight'
-              keyboardType='numeric'
-              value={input?.weight?.toString()}
-              onChangeText={(text) => {
-                if (!isNaN(parseFloat(text))) {
-                  setInput((prev) => ({ ...prev, weight: parseFloat(text) }));
-                } else if (text === '') {
-                  setInput((prev) => ({ ...prev, weight: undefined }));
-                }
-              }}
-              onEndEditing={handleEditingEnd}
-            />
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.inputLabel}>Reps</Text>
-            <Input
-              style={[styles.repInput]}
-              placeholder='Reps'
-              defaultValue=''
-              variant='outlined'
-              keyboardType='decimal-pad'
-              inputMode='decimal'
-              value={input?.reps?.toString()}
-              onChangeText={(text) => {
-                if (!isNaN(parseFloat(text))) {
-                  setInput((prev) => ({ ...prev, reps: parseFloat(text) }));
-                } else {
-                  setInput((prev) => ({ ...prev, reps: undefined }));
-                }
-              }}
-              onEndEditing={handleEditingEnd}
-            />
-          </View>
-        </View>
-
-        <View>
-          <Text style={[styles.inputLabel]}>Note</Text>
+    <View style={styles.inputContainer}>
+      <View style={styles.containerRow}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.inputLabel}>Weight</Text>
           <Input
-            style={[styles.noteInput]}
-            placeholder='Note'
-            multiline
+            id='weight'
             variant='outlined'
-            numberOfLines={4}
-            textAlignVertical='top'
-            value={input?.note ?? ''}
-            onChangeText={(text) =>
-              setInput((prev) => ({ ...prev, note: text }))
-            }
+            defaultValue=''
+            placeholder='Weight'
+            keyboardType='numeric'
+            value={input?.weight?.toString()}
+            onChangeText={(text) => {
+              if (!isNaN(parseFloat(text))) {
+                setInput((prev) => ({ ...prev, weight: parseFloat(text) }));
+              } else if (text === '') {
+                setInput((prev) => ({ ...prev, weight: undefined }));
+              }
+            }}
             onEndEditing={handleEditingEnd}
           />
         </View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.inputLabel}>Reps</Text>
+          <Input
+            style={[styles.repInput]}
+            placeholder='Reps'
+            defaultValue=''
+            variant='outlined'
+            keyboardType='decimal-pad'
+            inputMode='decimal'
+            value={input?.reps?.toString()}
+            onChangeText={(text) => {
+              if (!isNaN(parseFloat(text))) {
+                setInput((prev) => ({ ...prev, reps: parseFloat(text) }));
+              } else {
+                setInput((prev) => ({ ...prev, reps: undefined }));
+              }
+            }}
+            onEndEditing={handleEditingEnd}
+          />
+        </View>
+      </View>
+
+      <View>
+        <Text style={[styles.inputLabel]}>Note</Text>
+        <Input
+          style={[styles.noteInput]}
+          placeholder='Note'
+          multiline
+          variant='outlined'
+          numberOfLines={4}
+          textAlignVertical='top'
+          value={input?.note ?? ''}
+          onChangeText={(text) => setInput((prev) => ({ ...prev, note: text }))}
+          onEndEditing={handleEditingEnd}
+        />
       </View>
     </View>
   );

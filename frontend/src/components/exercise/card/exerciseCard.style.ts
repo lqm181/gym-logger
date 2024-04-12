@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 8,
     borderRadius: 12,
-    marginTop: 24,
   },
   cardHeader: {
     display: 'flex',
