@@ -113,6 +113,7 @@ const LogsScreen = () => {
           style={{
             borderRadius: 12,
             overflow: 'hidden',
+            minHeight: 10,
           }}
         >
           <FlashList

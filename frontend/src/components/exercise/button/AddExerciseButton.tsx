@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import React, { useState } from 'react';
 import { Button } from '../../common/button';
 import AddExerciseModal from '../modal/AddExerciseModal';
-import { SIZES } from '@/src/constants';
+import { FONTWEIGHT, SIZES } from '@/src/constants';
 
 const AddExerciseButton = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -30,10 +30,11 @@ const AddExerciseButton = () => {
         color='primary'
         textProps={{
           fontSize: SIZES.medium,
+          fontWeight: FONTWEIGHT.regular,
         }}
         onPress={handleAddNewExercise}
       >
-        Add
+        Add Exercise
       </Button>
 
       <AddExerciseModal

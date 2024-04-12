@@ -1,4 +1,11 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native';
 import React, { useEffect } from 'react';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { AddExerciseButton } from '@/src/components';
@@ -9,11 +16,14 @@ import { ExercisePerformed, Workout } from '@/src/types';
 import ExerciseCard from '@/src/components/exercise/card/ExerciseCard';
 import { MenuProvider } from 'react-native-popup-menu';
 import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 const LogDetailScreen = () => {
   const { title, workoutId } = useLocalSearchParams();
   const router = useRouter();
   const { data, isLoading, error, fetchData } = useDataFetcher<Workout>();
+  const headerHeight = useHeaderHeight();
 
   useEffect(() => {
     /* Dynamically set the title for each log */
@@ -73,18 +83,23 @@ const LogDetailScreen = () => {
             backgroundColor: COLORS.lightWhite,
           }}
         >
-          {data && data.performedExercises.length > 0 ? (
-            <View style={{ paddingHorizontal: 8, paddingVertical: 8 }}>
-              <Text
-                style={{
-                  fontSize: SIZES.xxLarge,
-                  fontWeight: FONTWEIGHT.bold,
-                  marginBottom: 12,
-                }}
-              >
-                {title}
-              </Text>
-
+          <View
+            style={{
+              paddingHorizontal: 8,
+              paddingTop: headerHeight,
+              paddingBottom: 24,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: SIZES.xxLarge,
+                fontWeight: FONTWEIGHT.bold,
+                marginBottom: 12,
+              }}
+            >
+              {title}
+            </Text>
+            {data && data.performedExercises.length > 0 ? (
               <View style={{ paddingHorizontal: 4, minHeight: 10 }}>
                 <FlashList
                   data={data?.performedExercises}
@@ -102,29 +117,29 @@ const LogDetailScreen = () => {
                   estimatedItemSize={10}
                 />
               </View>
-            </View>
-          ) : (
-            <View
-              style={{
-                display: 'flex',
-                flex: 1,
-                height: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingVertical: 24,
-              }}
-            >
-              <Text
+            ) : (
+              <View
                 style={{
-                  fontSize: SIZES.medium,
-                  color: COLORS.gray,
-                  fontWeight: FONTWEIGHT.semibold,
+                  display: 'flex',
+                  flex: 1,
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  paddingVertical: 12,
                 }}
               >
-                Get started with an exercise.
-              </Text>
-            </View>
-          )}
+                <Text
+                  style={{
+                    fontSize: SIZES.medium,
+                    color: COLORS.gray,
+                    fontWeight: FONTWEIGHT.semibold,
+                  }}
+                >
+                  Get started with an exercise.
+                </Text>
+              </View>
+            )}
+          </View>
         </ScrollView>
       </MenuProvider>
     </View>
