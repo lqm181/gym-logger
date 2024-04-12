@@ -7,12 +7,15 @@ import { Ionicons } from '@expo/vector-icons';
 import PopoverMenu from '../../common/menu/PopoverMenu';
 import AddSetButton from '../button/AddSetButton';
 import EditSetModal from '../modal/EditSetModal';
+import DeleteSetConfirmModal from '../modal/DeleteSetConfirmModal';
 
 interface ExerciseCardProps {
   data: ExercisePerformed;
 }
 
 const ExerciseCard = ({ data }: ExerciseCardProps) => {
+  console.log(undefined == undefined);
+
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardHeader}>
@@ -27,7 +30,7 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
 
       {/* Card Content */}
       {data.exerciseSets.length <= 0 ? (
-        <Text>You have not start any set for this exercise.</Text>
+        <Text>You have not started any set for this exercise.</Text>
       ) : (
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>
@@ -39,6 +42,8 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
           </View>
           {data.exerciseSets.map((exerciseSet, index) => {
             const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+            const [isDeleteModalVisible, setIsDeleteModalVisible] =
+              useState(false);
 
             return (
               <View key={index} style={styles.tableRow}>
@@ -73,6 +78,7 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
                             color='red'
                           />
                         ),
+                        onPress: () => setIsDeleteModalVisible(true),
                       },
                     ]}
                   />
@@ -83,6 +89,13 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
                   onCloseModal={() => setIsEditModalVisible(false)}
                   initialValue={exerciseSet}
                 />
+                {exerciseSet.id != null && exerciseSet.id !== undefined && (
+                  <DeleteSetConfirmModal
+                    isVisible={isDeleteModalVisible}
+                    exerciseSetId={exerciseSet.id}
+                    onCloseModal={() => setIsDeleteModalVisible(false)}
+                  />
+                )}
               </View>
             );
           })}

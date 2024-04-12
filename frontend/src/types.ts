@@ -1,5 +1,5 @@
 export interface ExerciseSet {
-  id?: string;
+  id?: string | number;
   weight?: number;
   reps?: number;
   note?: string;
