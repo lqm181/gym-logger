@@ -1,13 +1,10 @@
 import { View, Text } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import { ExercisePerformed } from '@/src/types';
 import styles from './exerciseCard.style';
 import { getTotalVolume } from '@/src/utils/exerciseUtils';
-import { Ionicons } from '@expo/vector-icons';
-import PopoverMenu from '../../common/menu/PopoverMenu';
 import AddSetButton from '../button/AddSetButton';
-import EditSetModal from '../modal/EditSetModal';
-import DeleteSetConfirmModal from '../modal/DeleteSetConfirmModal';
+import SetRow from './SetRow';
 
 interface ExerciseCardProps {
   data: ExercisePerformed;
@@ -38,65 +35,14 @@ const ExerciseCard = ({ data }: ExerciseCardProps) => {
             <Text style={[styles.tableHeader, styles.largeCell]}>Note</Text>
             <Text style={[styles.tableAction]}></Text>
           </View>
-          {data.exerciseSets.map((exerciseSet, index) => {
-            const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-            const [isDeleteModalVisible, setIsDeleteModalVisible] =
-              useState(false);
-
-            return (
-              <View key={index} style={styles.tableRow}>
-                <Text style={[styles.tableCell, styles.smallCell]}>
-                  {index + 1}
-                </Text>
-                <Text style={[styles.tableCell, styles.mediumCell]}>
-                  {exerciseSet.weight}
-                </Text>
-                <Text style={[styles.tableCell, styles.mediumCell]}>
-                  {exerciseSet.reps}
-                </Text>
-                <Text style={[styles.tableCell, styles.largeCell]}>
-                  {exerciseSet.note}
-                </Text>
-                <View style={[styles.tableAction]}>
-                  <PopoverMenu
-                    options={[
-                      {
-                        name: 'Edit',
-                        icon: (
-                          <Ionicons name='pencil' size={20} color='black' />
-                        ),
-                        onPress: () => setIsEditModalVisible(true),
-                      },
-                      {
-                        name: <Text style={{ color: 'red' }}>Delete</Text>,
-                        icon: (
-                          <Ionicons
-                            name='trash-outline'
-                            size={20}
-                            color='red'
-                          />
-                        ),
-                        onPress: () => setIsDeleteModalVisible(true),
-                      },
-                    ]}
-                  />
-                </View>
-
-                <EditSetModal
-                  isVisible={isEditModalVisible}
-                  onCloseModal={() => setIsEditModalVisible(false)}
-                  initialValue={exerciseSet}
-                />
-                {exerciseSet.id != null && exerciseSet.id !== undefined && (
-                  <DeleteSetConfirmModal
-                    isVisible={isDeleteModalVisible}
-                    exerciseSetId={exerciseSet.id}
-                    onCloseModal={() => setIsDeleteModalVisible(false)}
-                  />
-                )}
-              </View>
-            );
-          })}
+          {data.exerciseSets.map((exerciseSet, index) => (
+            <SetRow
+              key={index}
+              index={index}
+              exerciseSet={exerciseSet}
+              exerciseId={data.id}
+            />
+          ))}
         </View>
       )}
 

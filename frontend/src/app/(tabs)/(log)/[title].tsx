@@ -36,7 +36,7 @@ const LogDetailScreen = () => {
     /* Dynamically set the title for each log */
     // TODO: Fetch workout information
     fetchData(`${BACKEND_API_URL}/workouts/${workoutId}`);
-  }, []);
+  }, [title, workoutId]);
 
   useEffect(() => {
     if (data) {

@@ -27,6 +27,7 @@ const useDataFetcher = <T>() => {
 
       const jsonData = await response.json();
       setData(jsonData);
+      return jsonData;
     } catch (error) {
       console.log('Fetch error', error);
       setError(error as Error);

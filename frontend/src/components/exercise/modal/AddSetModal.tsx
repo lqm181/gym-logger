@@ -6,6 +6,8 @@ import { BACKEND_API_URL } from '@/src/constants';
 import SetInput from '../input/SetInput';
 import useDataFetcher from '@/src/hooks/useDataFetcher';
 import { ExerciseSet } from '@/src/types';
+import { useAppDispatch } from '@/src/state/store';
+import { addSet } from '@/src/state/performedExerciseSlice';
 
 interface AddSetModalProps {
   isVisible: boolean;
@@ -18,8 +20,10 @@ const AddSetModal = ({
   onCloseModal,
   performedExerciseId,
 }: AddSetModalProps) => {
+  const dispatch = useAppDispatch();
+
   const [newSet, setNewSet] = useState<ExerciseSet | null>();
-  const { data, isLoading, error, fetchData } = useDataFetcher();
+  const { isLoading, error, fetchData } = useDataFetcher();
 
   const handleAddNewSet = async () => {
     // TODO: Add methods for adding the new set to the corresponding set list
@@ -33,7 +37,7 @@ const AddSetModal = ({
     ) {
       Alert.alert('Error', 'Please enter the weight and reps of your set.');
     } else {
-      await fetchData(
+      const newSetData = (await fetchData(
         `${BACKEND_API_URL}/exercise-sets/performed-exercises/${performedExerciseId}`,
         {
           method: 'POST',
@@ -47,7 +51,9 @@ const AddSetModal = ({
             created_at: new Date(),
           },
         }
-      );
+      )) as ExerciseSet;
+
+      dispatch(addSet({ newSet: newSetData, exerciseId: performedExerciseId }));
 
       setNewSet(null);
       onCloseModal();
