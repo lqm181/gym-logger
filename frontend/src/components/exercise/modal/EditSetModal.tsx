@@ -9,40 +9,55 @@ import useDataFetcher from '@/src/hooks/useDataFetcher';
 import { Exercise, ExerciseSet } from '@/src/types';
 import _ from 'lodash';
 import { isValidSet } from '@/src/utils/exerciseUtils';
+import { useAppDispatch } from '@/src/state/store';
+import { updateSet } from '@/src/state/performedExerciseSlice';
 
 interface EditSetModalProps {
   isVisible: boolean;
   onCloseModal: () => void;
   initialValue: ExerciseSet;
+  exerciseId: string | number;
 }
 
 const EditSetModal = ({
   isVisible,
   onCloseModal,
   initialValue,
+  exerciseId,
 }: EditSetModalProps) => {
+  const dispatch = useAppDispatch();
+
   const [newSet, setNewSet] = useState<ExerciseSet>(initialValue);
   const [hasChange, setHasChange] = useState(false);
-  const { data, isLoading, error, fetchData } = useDataFetcher();
+  const { isLoading, error, fetchData } = useDataFetcher();
 
   const handleAddNewSet = async () => {
-    // TODO: Add methods for updating the set information
     if (!isValidSet(newSet)) {
       Alert.alert('Error', 'Please enter valid values for your set.');
     } else {
-      await fetchData(`${BACKEND_API_URL}/exercise-sets/${initialValue.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: {
-          ...newSet,
-        },
-      });
+      const updatedSet = (await fetchData(
+        `${BACKEND_API_URL}/exercise-sets/${initialValue.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: {
+            ...newSet,
+          },
+        }
+      )) as ExerciseSet;
 
+      dispatch(updateSet({ updatedSet: updatedSet, exerciseId: exerciseId }));
       onCloseModal();
     }
   };
+
+  useEffect(() => {
+    if (initialValue) {
+      setNewSet(initialValue);
+    }
+  }, [initialValue]);
 
   useEffect(() => {
     if (newSet && initialValue && _.isEqual(newSet, initialValue)) {
