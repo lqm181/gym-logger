@@ -17,3 +17,15 @@ export const isValidSet = (exerciseSet: ExerciseSet) => {
     exerciseSet.weight > 0
   );
 };
+
+// export const normalizeExercisePerformed = (
+//   exercisePerformed: ExercisePerformed,
+//   workoutId: string | number
+// ): NormalizedExercisePerformed => {
+//   return {
+//     id: exercisePerformed.id,
+//     exercise: exercisePerformed.exercise,
+//     exerciseSets: exercisePerformed.exerciseSets,
+//     workoutId: workoutId,
+//   };
+// };

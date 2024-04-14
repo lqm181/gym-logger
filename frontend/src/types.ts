@@ -24,3 +24,18 @@ export interface Workout {
   performedExercises: ExercisePerformed[];
   created_at?: Date;
 }
+
+export interface NormalizedWorkout
+  extends Pick<Workout, 'id' | 'title' | 'created_at'> {
+  performedExerciseIds: (string | number)[];
+}
+
+export interface WorkoutState {
+  allIds: (number | string)[];
+  byIds: { [id: string | number]: NormalizedWorkout };
+}
+
+export interface ExercisePerformedState {
+  allIds: (number | string)[];
+  byIds: { [id: string | number]: ExercisePerformed };
+}
