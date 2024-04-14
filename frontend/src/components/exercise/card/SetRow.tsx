@@ -56,6 +56,7 @@ const SetRow = ({ index, exerciseSet, exerciseId }: SetRowProps) => {
         <DeleteSetConfirmModal
           isVisible={isDeleteModalVisible}
           exerciseSetId={exerciseSet.id}
+          exerciseId={exerciseId}
           onCloseModal={() => setIsDeleteModalVisible(false)}
         />
       )}

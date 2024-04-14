@@ -7,19 +7,24 @@ import { BACKEND_API_URL, COLORS, SIZES } from '@/src/constants';
 import SetInput from '../input/SetInput';
 import useDataFetcher from '@/src/hooks/useDataFetcher';
 import { Exercise, ExerciseSet } from '@/src/types';
+import { useAppDispatch } from '@/src/state/store';
+import { deleteSet } from '@/src/state/performedExerciseSlice';
 
 interface DeleteSetConfirmModalProps {
   isVisible: boolean;
   onCloseModal: () => void;
   exerciseSetId: string | number;
+  exerciseId: string | number;
 }
 
 const DeleteSetConfirmModal = ({
   isVisible,
   onCloseModal,
   exerciseSetId,
+  exerciseId,
 }: DeleteSetConfirmModalProps) => {
-  const { data, isLoading, error, fetchData } = useDataFetcher();
+  const dispatch = useAppDispatch();
+  const { isLoading, error, fetchData } = useDataFetcher();
 
   const handleDeleteSet = async () => {
     // TODO: Add methods for deleting the set from the exercise
@@ -27,6 +32,8 @@ const DeleteSetConfirmModal = ({
     await fetchData(`${BACKEND_API_URL}/exercise-sets/${exerciseSetId}`, {
       method: 'DELETE',
     });
+
+    dispatch(deleteSet({ exerciseId, setId: exerciseSetId }));
     onCloseModal();
   };
 
