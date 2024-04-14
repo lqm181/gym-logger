@@ -81,7 +81,6 @@ const LogsScreen = () => {
           style={{ width: 'auto', height: 40 }}
           color='info'
           onPress={() => {
-            console.log('Refreshing');
             router.replace('/(tabs)/logs');
           }}
         >

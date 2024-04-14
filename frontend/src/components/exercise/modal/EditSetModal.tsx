@@ -58,8 +58,6 @@ const EditSetModal = ({
     onCloseModal();
   };
 
-  console.log('initial', initialValue);
-  console.log('new', newSet);
   return (
     <Modal animationType='slide' transparent={true} visible={isVisible}>
       <View style={styles.centeredView}>

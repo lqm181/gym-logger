@@ -14,8 +14,6 @@ interface ExerciseCardProps {
 }
 
 const ExerciseCard = ({ data }: ExerciseCardProps) => {
-  console.log(undefined == undefined);
-
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardHeader}>
