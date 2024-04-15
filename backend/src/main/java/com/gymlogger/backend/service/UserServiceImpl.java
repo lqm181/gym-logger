@@ -4,6 +4,8 @@ import com.gymlogger.backend.model.User;
 import com.gymlogger.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,5 +21,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id " + id));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
