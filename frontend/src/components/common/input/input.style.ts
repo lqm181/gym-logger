@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     width: 'auto',
   },
   inputStyle: {
-    height: 40,
+    height: 50,
     padding: 10,
     paddingTop: 10,
     fontSize: SIZES.medium,
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
   },
   outlined: {
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 8,
   },
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   focusOutlined: {
-    borderWidth: 1,
+    borderWidth: 1.5,
   },
   focusFilled: {
     borderWidth: 1,

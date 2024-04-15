@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   buttonBase: {
+    height: 50,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
@@ -23,7 +24,6 @@ const styles = StyleSheet.create({
   },
 
   outlinedButtonBase: {
-    borderWidth: 1,
     backgroundColor: COLORS.lightWhite,
   },
 

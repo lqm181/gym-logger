@@ -1,11 +1,18 @@
 import { Text, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { Tabs } from 'expo-router';
+import { Redirect, Slot, Tabs, useRouter } from 'expo-router';
 import { FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { COLORS, SIZES } from '@/src/constants';
 import { IconButton, UserAvatar } from '@/src/components';
 
 export default function Layout() {
+  const router = useRouter();
+  // TODO: Replace with API calll
+  const isLoggedIn = false;
+  if (!isLoggedIn) {
+    return <Redirect href='/welcome' />;
+  }
+
   return (
     <Tabs initialRouteName='index' backBehavior='history'>
       <Tabs.Screen
