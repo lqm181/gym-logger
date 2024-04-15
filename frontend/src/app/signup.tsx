@@ -13,7 +13,7 @@ import { COLORS, FONTWEIGHT, SIZES } from '../constants';
 import { Link } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
 
-const login = () => {
+const signup = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <KeyboardAvoidingView
@@ -28,12 +28,29 @@ const login = () => {
         >
           <View style={styles.container}>
             <View style={styles.header}>
-              <Text style={styles.title}>Welcome Back</Text>
-              <Text style={styles.subTitle}>
-                Login to your account to continue.
-              </Text>
+              <Text style={styles.title}>Create Account</Text>
+              {/* <Text style={styles.subTitle}>
+                Signup to your account to continue.
+              </Text> */}
             </View>
             <View style={styles.inputContainer}>
+              <View style={styles.inputRow}>
+                <FontAwesome6 name='user-large' size={20} color='black' />
+                <Input
+                  variant='outlined'
+                  label='First Name'
+                  placeholder='First Name'
+                  containerStyle={[styles.input]}
+                  style={{ borderWidth: 1 }}
+                />
+                <Input
+                  variant='outlined'
+                  label='Last Name'
+                  placeholder='Last Name'
+                  containerStyle={[styles.input]}
+                  style={{ borderWidth: 1 }}
+                />
+              </View>
               <View style={styles.inputRow}>
                 <FontAwesome6 name='envelope' size={20} color='black' />
                 <Input
@@ -47,23 +64,33 @@ const login = () => {
               </View>
               <View style={styles.inputRow}>
                 <FontAwesome6 name='lock' size={20} color='black' />
-
                 <Input
                   variant='outlined'
                   label='Password'
                   placeholder='Password'
                   secureTextEntry={true}
-                  textContentType='password'
+                  textContentType='newPassword'
+                  containerStyle={[styles.input]}
+                />
+              </View>
+              <View style={styles.inputRow}>
+                <FontAwesome6 name='circle-check' size={20} color='black' />
+                <Input
+                  variant='outlined'
+                  label='Confirm Password'
+                  placeholder='Confirm Password'
+                  secureTextEntry={true}
+                  textContentType='newPassword'
                   containerStyle={[styles.input]}
                 />
               </View>
             </View>
             <View style={styles.actionContainer}>
-              <Button style={styles.button}>Log in</Button>
+              <Button style={styles.button}>Sign up</Button>
               <Text>
-                Don't have an account?{' '}
-                <Link href='/signup' style={styles.link}>
-                  Sign up
+                Already have an account?{' '}
+                <Link href='/login' style={styles.link}>
+                  Log in
                 </Link>
               </Text>
             </View>
@@ -74,7 +101,7 @@ const login = () => {
   );
 };
 
-export default login;
+export default signup;
 
 const styles = StyleSheet.create({
   container: {
