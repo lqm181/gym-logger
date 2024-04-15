@@ -1,5 +1,6 @@
 package com.gymlogger.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,8 +34,10 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @JsonIgnore
     private String password;
 
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     private Role role;
 
