@@ -5,15 +5,55 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Keyboard,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Input } from '../components';
-import { COLORS, FONTWEIGHT, SIZES } from '../constants';
+import { BACKEND_API_URL, COLORS, FONTWEIGHT, SIZES } from '../constants';
 import { Link } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
+import useDataFetcher from '../hooks/useDataFetcher';
 
 const login = () => {
+  const [credentials, setCredentials] = useState<{
+    email: string | undefined;
+    password: string | undefined;
+  }>({ email: undefined, password: undefined });
+  const { isLoading, error, fetchData } = useDataFetcher();
+  const [authError, setAuthError] = useState<null | Error>();
+
+  const handleLogin = async () => {
+    if (!credentials.email || !credentials.password) {
+      setAuthError(new Error('Please enter valid username and password.'));
+      return;
+    }
+
+    Keyboard.dismiss();
+    const userData = await fetchData(
+      `${BACKEND_API_URL}/api/auth/authenticate`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: { ...credentials },
+      }
+    );
+
+    if (userData) {
+      // Todo: Add redirection and save user session.
+      setAuthError(null);
+      console.log(userData);
+    }
+  };
+
+  useEffect(() => {
+    if (error) {
+      setAuthError(new Error('Incorrect email or password.'));
+    }
+  }, [error]);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <KeyboardAvoidingView
@@ -34,6 +74,9 @@ const login = () => {
               </Text>
             </View>
             <View style={styles.inputContainer}>
+              {authError && (
+                <Text style={styles.errorText}>* {authError.message}</Text>
+              )}
               <View style={styles.inputRow}>
                 <FontAwesome6 name='envelope' size={20} color='black' />
                 <Input
@@ -42,7 +85,11 @@ const login = () => {
                   placeholder='Email'
                   containerStyle={[styles.input]}
                   inputMode='email'
+                  value={credentials.email}
                   style={{ borderWidth: 1 }}
+                  onChangeText={(text) =>
+                    setCredentials((prev) => ({ ...prev, email: text }))
+                  }
                 />
               </View>
               <View style={styles.inputRow}>
@@ -54,12 +101,22 @@ const login = () => {
                   placeholder='Password'
                   secureTextEntry={true}
                   textContentType='password'
+                  value={credentials.password}
                   containerStyle={[styles.input]}
+                  onChangeText={(text) =>
+                    setCredentials((prev) => ({ ...prev, password: text }))
+                  }
                 />
               </View>
             </View>
             <View style={styles.actionContainer}>
-              <Button style={styles.button}>Log in</Button>
+              <Button
+                style={styles.button}
+                onPress={handleLogin}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Logging in..' : 'Log in'}
+              </Button>
               <Text>
                 Don't have an account?{' '}
                 <Link href='/signup' style={styles.link}>
@@ -97,6 +154,7 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
   },
   inputContainer: { gap: 16 },
+  errorText: { color: COLORS.error, marginBottom: 8 },
   inputRow: {
     display: 'flex',
     flexDirection: 'row',
