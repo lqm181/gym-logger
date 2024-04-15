@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.PublicKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,9 +17,11 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+    private final String SECRET_KEY;
 
-    @Value("${JWT.secret: JWT_SECRET_KEY}")
-    private static String SECRET_KEY;
+    public JwtService(@Value("${jwt.secret:JWT_SECRET_KEY}") String jwtSecret) {
+        this.SECRET_KEY = jwtSecret;
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -58,7 +59,7 @@ public class JwtService {
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 365)) // Token valid for 1 year
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 90)) // Token valid for 90 days
                 .signWith(getSignInKey())
                 .compact();
     }
