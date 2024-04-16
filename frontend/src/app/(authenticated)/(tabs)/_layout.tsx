@@ -1,25 +1,10 @@
 import React from 'react';
-import { Redirect, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { COLORS, SIZES } from '@/src/constants';
 import { AddWorkoutButton, IconButton, UserAvatar } from '@/src/components';
-import { useSession } from '@/src/providers/SessionProvider';
-import { Text } from 'react-native';
-import { isValidJwt } from '@/src/utils/jwtUtils';
 
 export default function Layout() {
-  const { session, isLoading, signOut } = useSession();
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (!session || !isValidJwt(session.token)) {
-    // If the user has not signed in (not session)
-    // or if the token expired, then redirect to sign in page.
-    signOut();
-    return <Redirect href='/welcome' />;
-  }
-
   return (
     <Tabs initialRouteName='index' backBehavior='history'>
       <Tabs.Screen
@@ -68,7 +53,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name='(log)'
+        name='add_exercise'
         options={{
           title: 'New Workout',
           headerShown: false,
@@ -97,10 +82,6 @@ export default function Layout() {
             <FontAwesome6 name='user' size={size} color={color} />
           ),
         }}
-      />
-      <Tabs.Screen
-        name='add_exercise'
-        options={{ href: null, headerShown: false }}
       />
     </Tabs>
   );

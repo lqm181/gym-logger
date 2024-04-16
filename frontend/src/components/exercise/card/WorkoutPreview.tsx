@@ -21,7 +21,7 @@ const WorkoutPreview = ({ workoutData }: WorkoutPreviewProps) => {
     <TouchableHighlight
       onPress={() =>
         router.push({
-          pathname: '/(tabs)/(log)/[title]',
+          pathname: '/(authenticated)/(log)/[title]',
           params: { title: workoutData.title, workoutId: workoutData.id },
         })
       }

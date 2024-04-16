@@ -25,7 +25,7 @@ const AddWorkoutButton = ({ children, ...props }: TouchableOpacityProps) => {
       isAfterToday(mostCurrentWorkout.created_at)
     ) {
       router.push({
-        pathname: '/(tabs)/(log)/[title]',
+        pathname: '/(authenticated)/(log)/[title]',
         params: {
           title: mostCurrentWorkout.title,
           workoutId: mostCurrentWorkout.id,
@@ -70,7 +70,7 @@ const AddWorkoutButton = ({ children, ...props }: TouchableOpacityProps) => {
 
       // Redirect to workout detail page
       router.push({
-        pathname: '/(tabs)/(log)/[title]',
+        pathname: '/(authenticated)/(log)/[title]',
         params: { title: newWorkout.title, workoutId: newWorkout.id },
       });
     }

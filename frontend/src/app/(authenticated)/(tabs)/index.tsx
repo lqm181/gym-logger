@@ -1,5 +1,5 @@
 import { ScrollView, View } from 'react-native';
-import { Welcome } from '../../components';
+import { Welcome } from '@/src/components';
 import { BACKEND_API_URL, COLORS, SIZES } from '@/src/constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSession } from '@/src/providers/SessionProvider';
