@@ -11,6 +11,7 @@ import ListDivider from './common/ListDivider';
 import AddExerciseModal from './exercise/modal/AddExerciseModal';
 import AddExerciseButton from './exercise/button/AddExerciseButton';
 import WorkoutPreview from './exercise/card/WorkoutPreview';
+import AddWorkoutButton from './exercise/button/AddWorkoutButton';
 
 export {
   Welcome,
@@ -24,4 +25,5 @@ export {
   WorkoutPreview,
   ListDivider,
   Input,
+  AddWorkoutButton,
 };

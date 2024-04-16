@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Tabs } from 'expo-router';
 import { FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { COLORS, SIZES } from '@/src/constants';
-import { IconButton, UserAvatar } from '@/src/components';
+import { AddWorkoutButton, IconButton, UserAvatar } from '@/src/components';
 import { useSession } from '@/src/providers/SessionProvider';
 import { Text } from 'react-native';
 import { isValidJwt } from '@/src/utils/jwtUtils';
@@ -70,14 +70,11 @@ export default function Layout() {
       <Tabs.Screen
         name='(log)'
         options={{
-          title: 'Start Exercise',
-          // href: {
-          //   pathname: '/(tabs)/(log)/[date]',
-          //   params: {
-          //     date: new Date().toLocaleDateString(),
-          //   },
-          // },
+          title: 'New Workout',
           headerShown: false,
+          tabBarButton: ({ onPress, ...props }) => (
+            <AddWorkoutButton {...props} />
+          ),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name='add-circle-outline' size={size} color={color} />
           ),

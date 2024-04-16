@@ -13,7 +13,7 @@ const useJwtFetcher = <T>() => {
     url: string | URL | Request,
     token: string,
     options: FetchOptions = {}
-  ) => {
+  ): Promise<T | undefined> => {
     setIsLoading(true);
 
     try {
