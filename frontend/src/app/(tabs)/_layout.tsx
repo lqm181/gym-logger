@@ -1,15 +1,22 @@
-import { Text, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { Redirect, Slot, Tabs, useRouter } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import { FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { COLORS, SIZES } from '@/src/constants';
 import { IconButton, UserAvatar } from '@/src/components';
+import { useSession } from '@/src/providers/SessionProvider';
+import { Text } from 'react-native';
+import { isValidJwt } from '@/src/utils/jwtUtils';
 
 export default function Layout() {
-  const router = useRouter();
-  // TODO: Replace with API calll
-  const isLoggedIn = false;
-  if (!isLoggedIn) {
+  const { session, isLoading, signOut } = useSession();
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (!session || !isValidJwt(session.token)) {
+    // If the user has not signed in (not session)
+    // or if the token expired, then redirect to sign in page.
+    signOut();
     return <Redirect href='/welcome' />;
   }
 

@@ -1,16 +1,21 @@
 import { View, Text, TouchableHighlight } from 'react-native';
 import React from 'react';
 import { Link, useRouter } from 'expo-router';
-import { Workout } from '@/src/types';
+import { NormalizedWorkout, Workout } from '@/src/types';
 import { FontAwesome6 } from '@expo/vector-icons';
 import styles from './workoutPreview.style';
+import { useAppSelector } from '@/src/state/store';
+import { selectWorkoutExercises } from '@/src/state/selectors';
 
 interface WorkoutPreviewProps {
-  workoutData: Workout;
+  workoutData: NormalizedWorkout;
 }
 
 const WorkoutPreview = ({ workoutData }: WorkoutPreviewProps) => {
   const router = useRouter();
+  const performedExercises = useAppSelector((state) =>
+    selectWorkoutExercises(state, workoutData.id)
+  );
 
   return (
     <TouchableHighlight
@@ -26,8 +31,8 @@ const WorkoutPreview = ({ workoutData }: WorkoutPreviewProps) => {
 
         <View style={styles.content}>
           <View style={styles.exerciseSummary}>
-            {workoutData.performedExercises.length > 0 ? (
-              workoutData.performedExercises.map((performedExercise, index) => {
+            {performedExercises.length > 0 ? (
+              performedExercises.map((performedExercise, index) => {
                 return (
                   <Text key={index} style={styles.entryText}>
                     - {performedExercise.exerciseSets.length} set x{' '}
