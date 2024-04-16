@@ -15,6 +15,7 @@ interface AuthContextProps {
     lastName: string;
     email: string;
     password: string;
+    confirmedPassword: string;
   }) => Promise<void>;
   signOut: () => void;
   session?: Session | null;
@@ -59,6 +60,19 @@ export function SessionProvider(props: React.PropsWithChildren) {
           setSession(data);
         },
         signUp: async (credentials) => {
+          // TODO: Add more validation
+          if (
+            !credentials.firstName ||
+            !credentials.lastName ||
+            !credentials.email ||
+            !credentials.password ||
+            !credentials.confirmedPassword
+          ) {
+            throw new Error('Please enter all required information.');
+          } else if (credentials.password !== credentials.confirmedPassword) {
+            throw new Error('Passwords do not match.');
+          }
+
           const res = await fetch(`${BACKEND_API_URL}/api/auth/register`, {
             method: 'POST',
             headers: {

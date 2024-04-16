@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Keyboard,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,65 +14,41 @@ import { BACKEND_API_URL, COLORS, FONTWEIGHT, SIZES } from '../constants';
 import { Link } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
 import useDataFetcher from '../hooks/useDataFetcher';
+import { useSession } from '../providers/SessionProvider';
 
 const signup = () => {
   const [input, setInput] = useState<{
-    firstName: string | undefined;
-    lastName: string | undefined;
-    email: string | undefined;
-    password: string | undefined;
-    confirmedPassword: string | undefined;
-  }>({
-    firstName: undefined,
-    lastName: undefined,
-    email: undefined,
-    password: undefined,
-    confirmedPassword: undefined,
-  });
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    password?: string;
+    confirmedPassword?: string;
+  } | null>();
 
-  const { isLoading, error, fetchData } = useDataFetcher();
-  const [registerError, setRegisterError] = useState<null | Error>();
+  const [error, setError] = useState<null | Error>();
+  const [isLoading, setIsLoading] = useState(false);
+  const { signUp, session } = useSession();
 
-  // Todo: Add form validation.
   const handleSignup = async () => {
-    if (
-      !input.firstName ||
-      !input.lastName ||
-      !input.email ||
-      !input.password ||
-      !input.confirmedPassword
-    ) {
-      setRegisterError(new Error('Please enter all information.'));
-      return;
-    } else if (input.password !== input.confirmedPassword) {
-      setRegisterError(new Error('Passwords do not match.'));
-      return;
-    }
-
-    const userData = await fetchData(`${BACKEND_API_URL}/api/auth/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: {
-        ...input,
-      },
-    });
-
-    if (userData) {
-      // TODO: Add redirection and update user context.
-      setRegisterError(null);
+    Keyboard.dismiss();
+    try {
+      await signUp({
+        firstName: input?.firstName ?? '',
+        lastName: input?.lastName ?? '',
+        email: input?.email ?? '',
+        password: input?.password ?? '',
+        confirmedPassword: input?.confirmedPassword ?? '',
+      });
+      setError(null);
+      setInput(null);
+    } catch (e) {
+      setError(e as Error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (error) {
-      setRegisterError(
-        new Error('Email already exists. Please use a different email address.')
-      );
-    }
-  }, [error]);
-
+  console.log('signup', session);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <KeyboardAvoidingView
@@ -92,9 +69,7 @@ const signup = () => {
               </Text> */}
             </View>
             <View style={styles.inputContainer}>
-              {registerError && (
-                <Text style={styles.errorText}>* {registerError.message}</Text>
-              )}
+              {error && <Text style={styles.errorText}>* {error.message}</Text>}
               <View style={styles.inputRow}>
                 <FontAwesome6 name='user-large' size={20} color='black' />
                 <Input
