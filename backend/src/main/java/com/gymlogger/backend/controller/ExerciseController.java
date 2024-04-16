@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/exercises")
 public class ExerciseController {
@@ -16,5 +18,10 @@ public class ExerciseController {
     @ResponseStatus(HttpStatus.CREATED)
     public Exercise createNewExercise(@RequestBody Exercise exercise) {
         return exerciseService.add(exercise);
+    }
+
+    @GetMapping
+    public List<Exercise> getAllExercises() {
+        return exerciseService.getAllExercises();
     }
 }
