@@ -57,7 +57,7 @@ const Select = <T,>({
         iconStyle={styles.iconStyle}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-      ></Dropdown>
+      />
     </View>
   );
 };

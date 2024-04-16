@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './exercise.style';
 import { Select } from '../../common/select';
 import { Button } from '../../common/button';
-import { BACKEND_API_URL, COLORS } from '@/src/constants';
+import { BACKEND_API_URL, COLORS, SIZES } from '@/src/constants';
 import SetInput from '../input/SetInput';
 import { Exercise, ExercisePerformed, ExerciseSet } from '@/src/types';
 import useJwtFetcher from '@/src/hooks/useJwtFetcher';
@@ -98,7 +98,9 @@ const AddExerciseModal = ({
         { method: 'GET' }
       )) as Exercise[];
 
-      setOptions(optionData);
+      if (optionData) {
+        setOptions(optionData);
+      }
     };
 
     fetchExerciseOptions();
@@ -111,8 +113,7 @@ const AddExerciseModal = ({
   };
 
   return (
-    session &&
-    options && (
+    session && (
       <Modal animationType='slide' transparent={true} visible={isVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalContainer}>
@@ -122,20 +123,10 @@ const AddExerciseModal = ({
             {/* Content */}
             <ScrollView automaticallyAdjustKeyboardInsets>
               <Select
-                selectContainerStyle={{
-                  marginBottom: 24,
-                }}
                 data={options}
                 value={newExercise?.id.toString()}
                 labelField='name'
                 valueField='id'
-                onChange={(item) => {
-                  setNewExercise((prev) => ({
-                    ...prev,
-                    id: item.id,
-                    name: item.name,
-                  }));
-                }}
                 placeholder='Select an exercise'
                 selectLabel='Exercise Name'
                 search
@@ -144,6 +135,30 @@ const AddExerciseModal = ({
                 containerStyle={{
                   backgroundColor: COLORS.lightWhite,
                   borderRadius: 8,
+                }}
+                selectContainerStyle={{
+                  marginBottom: 24,
+                }}
+                flatListProps={{
+                  ListEmptyComponent: (
+                    <Text
+                      style={{
+                        paddingLeft: 8,
+                        fontSize: SIZES.medium,
+                        paddingVertical: 16,
+                        color: 'gray',
+                      }}
+                    >
+                      You completed all exercises for today.
+                    </Text>
+                  ),
+                }}
+                onChange={(item) => {
+                  setNewExercise((prev) => ({
+                    ...prev,
+                    id: item.id,
+                    name: item.name,
+                  }));
                 }}
               />
               <SetInput onEndEditing={(newValue) => setNewSet(newValue)} />
