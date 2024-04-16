@@ -1,5 +1,5 @@
 import { View, Text, Modal, ScrollView, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './exercise.style';
 import { Select } from '../../common/select';
 import { Button } from '../../common/button';
@@ -13,14 +13,6 @@ import { addExercises } from '@/src/state/performedExerciseSlice';
 import { addExerciseId } from '@/src/state/workoutSlice';
 
 // TODO: Add methods to fetch all options
-const options = [
-  { name: 'Bench Press', id: 1 },
-  { name: 'Bicep Curl', id: 2 },
-  { name: 'Deadlift', id: 3 },
-  { name: 'Lat Pulldown', id: 4 },
-  { name: 'Lateral Raise', id: 5 },
-  { name: 'Pullup', id: 6 },
-] as Exercise[];
 
 interface AddExerciseModalProps {
   isVisible: boolean;
@@ -37,8 +29,8 @@ const AddExerciseModal = ({
   const dispatch = useAppDispatch();
   const [newSet, setNewSet] = useState<ExerciseSet | null>();
   const [newExercise, setNewExercise] = useState<Exercise | null>();
-  const { data, isLoading, error, securedFetch } =
-    useJwtFetcher<ExercisePerformed>();
+  const [options, setOptions] = useState<Exercise[]>([]);
+  const { data, isLoading, error, securedFetch } = useJwtFetcher();
 
   const handleAddExercise = async () => {
     if (!newExercise) {
@@ -63,7 +55,7 @@ const AddExerciseModal = ({
       return;
     }
 
-    const newData = await securedFetch(
+    const newData = (await securedFetch(
       `${BACKEND_API_URL}/performed-exercises/workouts/${workoutId}`,
       session.token,
       {
@@ -86,8 +78,8 @@ const AddExerciseModal = ({
           ],
         },
       }
-    );
-    console.log(newData);
+    )) as ExercisePerformed;
+
     if (newData) {
       dispatch(addExercises([newData]));
       dispatch(addExerciseId({ exerciseId: newData.id, workoutId: workoutId }));
@@ -97,6 +89,21 @@ const AddExerciseModal = ({
     onCloseModal();
   };
 
+  useEffect(() => {
+    const fetchExerciseOptions = async () => {
+      if (!session) return;
+      const optionData = (await securedFetch(
+        `${BACKEND_API_URL}/exercises`,
+        session.token,
+        { method: 'GET' }
+      )) as Exercise[];
+
+      setOptions(optionData);
+    };
+
+    fetchExerciseOptions();
+  }, []);
+
   const closeModal = () => {
     setNewSet(null);
 
@@ -104,59 +111,62 @@ const AddExerciseModal = ({
   };
 
   return (
-    <Modal animationType='slide' transparent={true} visible={isVisible}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalContainer}>
-          {/* Title */}
-          <Text style={styles.title}>Add a new exercise</Text>
+    session &&
+    options && (
+      <Modal animationType='slide' transparent={true} visible={isVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalContainer}>
+            {/* Title */}
+            <Text style={styles.title}>Add a new exercise</Text>
 
-          {/* Content */}
-          <ScrollView automaticallyAdjustKeyboardInsets>
-            <Select
-              selectContainerStyle={{
-                marginBottom: 24,
-              }}
-              data={options}
-              value={newExercise?.id.toString()}
-              labelField='name'
-              valueField='id'
-              onChange={(item) => {
-                setNewExercise((prev) => ({
-                  ...prev,
-                  id: item.id,
-                  name: item.name,
-                }));
-              }}
-              placeholder='Select an exercise'
-              selectLabel='Exercise Name'
-              search
-              searchPlaceholder='Search...'
-              showsVerticalScrollIndicator
-              containerStyle={{
-                backgroundColor: COLORS.lightWhite,
-                borderRadius: 8,
-              }}
-            />
-            <SetInput onEndEditing={(newValue) => setNewSet(newValue)} />
-          </ScrollView>
+            {/* Content */}
+            <ScrollView automaticallyAdjustKeyboardInsets>
+              <Select
+                selectContainerStyle={{
+                  marginBottom: 24,
+                }}
+                data={options}
+                value={newExercise?.id.toString()}
+                labelField='name'
+                valueField='id'
+                onChange={(item) => {
+                  setNewExercise((prev) => ({
+                    ...prev,
+                    id: item.id,
+                    name: item.name,
+                  }));
+                }}
+                placeholder='Select an exercise'
+                selectLabel='Exercise Name'
+                search
+                searchPlaceholder='Search...'
+                showsVerticalScrollIndicator
+                containerStyle={{
+                  backgroundColor: COLORS.lightWhite,
+                  borderRadius: 8,
+                }}
+              />
+              <SetInput onEndEditing={(newValue) => setNewSet(newValue)} />
+            </ScrollView>
 
-          {/* Actions */}
-          <View style={styles.modelActions}>
-            <Button variant='outlined' color='error' onPress={closeModal}>
-              Cancel
-            </Button>
-            <Button
-              variant='contained'
-              color='primary'
-              disabled={isLoading}
-              onPress={handleAddExercise}
-            >
-              {isLoading ? 'Adding...' : 'Add'}
-            </Button>
+            {/* Actions */}
+            <View style={styles.modelActions}>
+              <Button variant='outlined' color='error' onPress={closeModal}>
+                Cancel
+              </Button>
+              <Button
+                variant='contained'
+                color='primary'
+                disabled={isLoading}
+                onPress={handleAddExercise}
+              >
+                {isLoading ? 'Adding...' : 'Add'}
+              </Button>
+            </View>
           </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    )
   );
 };
 
