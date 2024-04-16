@@ -1,20 +1,17 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableOpacityProps,
-} from 'react-native';
-import React, { ReactNode, useEffect } from 'react';
-import { Link, useRouter } from 'expo-router';
-import { useAppSelector } from '@/src/state/store';
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useAppDispatch, useAppSelector } from '@/src/state/store';
 import { selectWorkoutByIndex } from '@/src/state/selectors';
 import { Workout } from '@/src/types';
 import { useSession } from '@/src/providers/SessionProvider';
 import useJwtFetcher from '@/src/hooks/useJwtFetcher';
 import { BACKEND_API_URL } from '@/src/constants';
+import { addWorkouts } from '@/src/state/workoutSlice';
+import { isAfterToday } from '@/src/utils/dateUtils';
 
 const AddWorkoutButton = ({ children, ...props }: TouchableOpacityProps) => {
   const { session } = useSession();
+  const dispatch = useAppDispatch();
   const mostCurrentWorkout = useAppSelector((state) =>
     selectWorkoutByIndex(state, 0)
   );
@@ -25,7 +22,7 @@ const AddWorkoutButton = ({ children, ...props }: TouchableOpacityProps) => {
     // If workout for today already exist.
     if (
       mostCurrentWorkout?.created_at &&
-      mostCurrentWorkout.created_at >= new Date()
+      isAfterToday(mostCurrentWorkout.created_at)
     ) {
       router.push({
         pathname: '/(tabs)/(log)/[title]',
@@ -43,7 +40,6 @@ const AddWorkoutButton = ({ children, ...props }: TouchableOpacityProps) => {
       return;
     }
 
-    console.log(session);
     const newWorkout = await securedFetch(
       `${BACKEND_API_URL}/workouts/users/${session.userId}`,
       session?.token,
@@ -59,8 +55,20 @@ const AddWorkoutButton = ({ children, ...props }: TouchableOpacityProps) => {
         },
       }
     );
-    console.log('newWorkout', newWorkout);
     if (newWorkout) {
+      // Add new workout to the global state
+      dispatch(
+        addWorkouts([
+          {
+            id: newWorkout.id,
+            created_at: newWorkout.created_at,
+            title: newWorkout.title,
+            performedExerciseIds: [],
+          },
+        ])
+      );
+
+      // Redirect to workout detail page
       router.push({
         pathname: '/(tabs)/(log)/[title]',
         params: { title: newWorkout.title, workoutId: newWorkout.id },
@@ -71,7 +79,7 @@ const AddWorkoutButton = ({ children, ...props }: TouchableOpacityProps) => {
 
   // TODO: Handle error
   return (
-    <TouchableOpacity onPress={redirectToWorkoutDetail}>
+    <TouchableOpacity onPress={redirectToWorkoutDetail} {...props}>
       {children}
     </TouchableOpacity>
   );

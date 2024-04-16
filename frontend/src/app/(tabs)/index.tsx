@@ -26,9 +26,9 @@ export default function Home() {
           session.token
         );
       }
-
-      fetchWorkouts();
     };
+
+    fetchWorkouts();
   }, [session]);
 
   useEffect(() => {
@@ -39,8 +39,6 @@ export default function Home() {
       dispatch(addExercises(normalizedExercises));
     }
   }, [data]);
-
-  console.log(workouts);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <ScrollView showsVerticalScrollIndicator={false} style={{}}>
