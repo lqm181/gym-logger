@@ -7,13 +7,12 @@ import {
   ScrollView,
   Keyboard,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Input } from '../components';
-import { BACKEND_API_URL, COLORS, FONTWEIGHT, SIZES } from '../constants';
+import { COLORS, FONTWEIGHT, SIZES } from '../constants';
 import { Link } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
-import useDataFetcher from '../hooks/useDataFetcher';
 import { useSession } from '../providers/SessionProvider';
 
 const login = () => {
