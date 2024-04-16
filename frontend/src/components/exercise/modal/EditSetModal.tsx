@@ -1,16 +1,16 @@
 import { View, Text, Modal, ScrollView, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styles from './exercise.style';
-import { Select } from '../../common/select';
 import { Button } from '../../common/button';
 import { BACKEND_API_URL, COLORS } from '@/src/constants';
 import SetInput from '../input/SetInput';
-import useDataFetcher from '@/src/hooks/useDataFetcher';
-import { Exercise, ExerciseSet } from '@/src/types';
+import { ExerciseSet } from '@/src/types';
 import _ from 'lodash';
 import { isValidSet } from '@/src/utils/exerciseUtils';
 import { useAppDispatch } from '@/src/state/store';
 import { updateSet } from '@/src/state/performedExerciseSlice';
+import useJwtFetcher from '@/src/hooks/useJwtFetcher';
+import { useSession } from '@/src/providers/SessionProvider';
 
 interface EditSetModalProps {
   isVisible: boolean;
@@ -26,31 +26,40 @@ const EditSetModal = ({
   exerciseId,
 }: EditSetModalProps) => {
   const dispatch = useAppDispatch();
-
+  const { session } = useSession();
   const [newSet, setNewSet] = useState<ExerciseSet>(initialValue);
   const [hasChange, setHasChange] = useState(false);
-  const { isLoading, error, fetchData } = useDataFetcher();
+  const { isLoading, error, securedFetch } = useJwtFetcher();
 
   const handleAddNewSet = async () => {
     if (!isValidSet(newSet)) {
       Alert.alert('Error', 'Please enter valid values for your set.');
-    } else {
-      const updatedSet = (await fetchData(
-        `${BACKEND_API_URL}/exercise-sets/${initialValue.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: {
-            ...newSet,
-          },
-        }
-      )) as ExerciseSet;
-
-      dispatch(updateSet({ updatedSet: updatedSet, exerciseId: exerciseId }));
-      onCloseModal();
     }
+    if (!session) {
+      Alert.alert(
+        'Error',
+        'Please check your internet connection or login again to continue.'
+      );
+      return;
+    }
+    const updatedSet = (await securedFetch(
+      `${BACKEND_API_URL}/exercise-sets/${initialValue.id}`,
+      session.token,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          ...newSet,
+        },
+      }
+    )) as ExerciseSet;
+
+    if (updateSet) {
+      dispatch(updateSet({ updatedSet: updatedSet, exerciseId: exerciseId }));
+    }
+    onCloseModal();
   };
 
   useEffect(() => {

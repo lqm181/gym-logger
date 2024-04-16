@@ -1,14 +1,12 @@
-import { View, Text, Modal, ScrollView, Alert } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, Modal, Alert } from 'react-native';
+import React from 'react';
 import styles from './exercise.style';
-import { Select } from '../../common/select';
 import { Button } from '../../common/button';
-import { BACKEND_API_URL, COLORS, SIZES } from '@/src/constants';
-import SetInput from '../input/SetInput';
-import useDataFetcher from '@/src/hooks/useDataFetcher';
-import { Exercise, ExerciseSet } from '@/src/types';
+import { BACKEND_API_URL, SIZES } from '@/src/constants';
 import { useAppDispatch } from '@/src/state/store';
 import { deleteSet } from '@/src/state/performedExerciseSlice';
+import { useSession } from '@/src/providers/SessionProvider';
+import useJwtFetcher from '@/src/hooks/useJwtFetcher';
 
 interface DeleteSetConfirmModalProps {
   isVisible: boolean;
@@ -24,14 +22,24 @@ const DeleteSetConfirmModal = ({
   exerciseId,
 }: DeleteSetConfirmModalProps) => {
   const dispatch = useAppDispatch();
-  const { isLoading, error, fetchData } = useDataFetcher();
+  const { session } = useSession();
+  const { isLoading, error, securedFetch } = useJwtFetcher();
 
   const handleDeleteSet = async () => {
-    // TODO: Add methods for deleting the set from the exercise
-    // TODO: Add toast error notfication.
-    await fetchData(`${BACKEND_API_URL}/exercise-sets/${exerciseSetId}`, {
-      method: 'DELETE',
-    });
+    if (!session) {
+      Alert.alert(
+        'Error',
+        'Please check your internet connection or login again to continue.'
+      );
+      return;
+    }
+    await securedFetch(
+      `${BACKEND_API_URL}/exercise-sets/${exerciseSetId}`,
+      session.token,
+      {
+        method: 'DELETE',
+      }
+    );
 
     dispatch(deleteSet({ exerciseId, setId: exerciseSetId }));
     onCloseModal();
@@ -40,7 +48,6 @@ const DeleteSetConfirmModal = ({
   const closeModal = () => {
     onCloseModal();
   };
-
   return (
     <Modal animationType='slide' transparent={true} visible={isVisible}>
       <View style={styles.centeredView}>
