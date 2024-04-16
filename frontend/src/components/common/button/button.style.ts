@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 
   outlinedButtonBase: {
     backgroundColor: COLORS.lightWhite,
+    borderWidth: 1,
   },
 
   primaryContained: {

@@ -21,7 +21,7 @@ const AddSetButton = ({ performedExerciseId }: AddSetButtonProps) => {
     >
       <Button
         variant='contained'
-        style={{ width: '100%', backgroundColor: 'lightgray' }}
+        style={{ width: '100%', backgroundColor: 'lightgray', height: 40 }}
         textProps={{ color: 'black' }}
         onPress={() => {
           setIsVisible(true);
