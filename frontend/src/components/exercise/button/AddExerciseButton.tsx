@@ -4,7 +4,7 @@ import { Button } from '../../common/button';
 import AddExerciseModal from '../modal/AddExerciseModal';
 import { FONTWEIGHT, SIZES } from '@/src/constants';
 
-const AddExerciseButton = () => {
+const AddExerciseButton = ({ workoutId }: { workoutId: string | number }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const handleAddNewExercise = () => {
     setIsModalVisible(true);
@@ -40,6 +40,7 @@ const AddExerciseButton = () => {
       <AddExerciseModal
         isVisible={isModalVisible}
         onCloseModal={() => setIsModalVisible(false)}
+        workoutId={workoutId}
       />
     </View>
   );

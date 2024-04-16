@@ -23,8 +23,25 @@ const workoutSlice = createSlice({
         state.byIds[id] = workout;
       });
     },
+    addExerciseId: (
+      state,
+      action: PayloadAction<{
+        exerciseId: string | number;
+        workoutId: string | number;
+      }>
+    ) => {
+      const { exerciseId, workoutId: id } = action.payload;
+
+      // Workout not found.
+      if (!state.byIds[id]) return;
+
+      // Exercise already in the list
+      if (state.byIds[id].performedExerciseIds.includes(exerciseId)) return;
+
+      state.byIds[id].performedExerciseIds.push(exerciseId);
+    },
   },
 });
 
-export const { addWorkouts } = workoutSlice.actions;
+export const { addWorkouts, addExerciseId } = workoutSlice.actions;
 export default workoutSlice.reducer;

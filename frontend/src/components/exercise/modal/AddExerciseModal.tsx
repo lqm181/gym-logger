@@ -5,8 +5,12 @@ import { Select } from '../../common/select';
 import { Button } from '../../common/button';
 import { BACKEND_API_URL, COLORS } from '@/src/constants';
 import SetInput from '../input/SetInput';
-import useDataFetcher from '@/src/hooks/useDataFetcher';
-import { Exercise, ExerciseSet } from '@/src/types';
+import { Exercise, ExercisePerformed, ExerciseSet } from '@/src/types';
+import useJwtFetcher from '@/src/hooks/useJwtFetcher';
+import { useSession } from '@/src/providers/SessionProvider';
+import { useAppDispatch } from '@/src/state/store';
+import { addExercises } from '@/src/state/performedExerciseSlice';
+import { addExerciseId } from '@/src/state/workoutSlice';
 
 // TODO: Add methods to fetch all options
 const options = [
@@ -20,27 +24,28 @@ const options = [
 
 interface AddExerciseModalProps {
   isVisible: boolean;
+  workoutId: string | number;
   onCloseModal: () => void;
 }
 
 const AddExerciseModal = ({
   isVisible,
   onCloseModal,
+  workoutId,
 }: AddExerciseModalProps) => {
+  const { session } = useSession();
+  const dispatch = useAppDispatch();
   const [newSet, setNewSet] = useState<ExerciseSet | null>();
   const [newExercise, setNewExercise] = useState<Exercise | null>();
-
-  const { data, isLoading, error, fetchData } = useDataFetcher();
+  const { data, isLoading, error, securedFetch } =
+    useJwtFetcher<ExercisePerformed>();
 
   const handleAddExercise = async () => {
-    // TODO: Contact backend API to save the exercise
-    // TODO: Add methods for adding the new exercise to workout list
-    // TODO: Provide the workout Id
-    const workoutId = 9;
-
     if (!newExercise) {
       Alert.alert('Error', 'Please chose your exercise.');
-    } else if (
+      return;
+    }
+    if (
       !newSet ||
       newSet?.weight == null ||
       newSet?.weight == undefined ||
@@ -48,33 +53,48 @@ const AddExerciseModal = ({
       newSet?.reps == null
     ) {
       Alert.alert('Error', 'Please enter the weight and reps of your set.');
-    } else {
-      await fetchData(
-        `${BACKEND_API_URL}/performed-exercises/workouts/${workoutId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: {
-            exercise: {
-              id: newExercise?.id,
-            },
-            exerciseSets: [
-              {
-                weight: newSet.weight ?? 0,
-                reps: newSet.reps ?? 0,
-                note: newSet.note ?? null,
-                created_at: new Date(),
-              },
-            ],
-          },
-        }
-      );
-      setNewExercise(null);
-      setNewSet(null);
-      onCloseModal();
+      return;
     }
+    if (!session) {
+      Alert.alert(
+        'Error',
+        'Please check your internet connection or login again to continue'
+      );
+      return;
+    }
+
+    const newData = await securedFetch(
+      `${BACKEND_API_URL}/performed-exercises/workouts/${workoutId}`,
+      session.token,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          exercise: {
+            id: newExercise?.id,
+            name: newExercise?.name,
+          },
+          exerciseSets: [
+            {
+              weight: newSet.weight ?? 0,
+              reps: newSet.reps ?? 0,
+              note: newSet.note ?? null,
+              created_at: new Date(),
+            },
+          ],
+        },
+      }
+    );
+    console.log(newData);
+    if (newData) {
+      dispatch(addExercises([newData]));
+      dispatch(addExerciseId({ exerciseId: newData.id, workoutId: workoutId }));
+    }
+    setNewExercise(null);
+    setNewSet(null);
+    onCloseModal();
   };
 
   const closeModal = () => {
