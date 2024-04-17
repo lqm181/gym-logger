@@ -7,6 +7,10 @@ import com.gymlogger.backend.filter.JwtService;
 import com.gymlogger.backend.model.Role;
 import com.gymlogger.backend.model.User;
 import com.gymlogger.backend.repository.UserRepository;
+import com.gymlogger.backend.token.Token;
+import com.gymlogger.backend.token.TokenRepository;
+import com.gymlogger.backend.token.TokenSerice;
+import com.gymlogger.backend.token.TokenType;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +25,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final TokenSerice tokenSerice;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -33,6 +38,7 @@ public class AuthenticationService {
         repository.save(user);
 
         var jwtToken = jwtService.generateToken(user);
+        tokenSerice.saveUserJwtToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userId(user.getId())
@@ -52,6 +58,7 @@ public class AuthenticationService {
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("User not found."));
         var jwtToken = jwtService.generateToken(user);
+        tokenSerice.saveUserJwtToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userId(user.getId())

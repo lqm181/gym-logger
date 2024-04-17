@@ -59,7 +59,7 @@ public class JwtService {
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 90)) // Token valid for 90 days
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 6)) // Token valid for 6 hours
                 .signWith(getSignInKey())
                 .compact();
     }
