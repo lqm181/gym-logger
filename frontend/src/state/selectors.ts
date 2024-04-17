@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
+export const selectUser = (state: RootState) => state.user;
 export const selectWorkouts = (state: RootState) => state.workouts;
 export const selectPerformedExercises = (state: RootState) =>
   state.performedExercises;

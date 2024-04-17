@@ -6,39 +6,54 @@ import { useSession } from '@/src/providers/SessionProvider';
 import { useEffect } from 'react';
 import useJwtFetcher from '@/src/hooks/useJwtFetcher';
 import { normalizeWorkoutData } from '@/src/utils/workoutUtils';
-import { Workout } from '@/src/types';
+import { User, Workout } from '@/src/types';
 import { addExercises } from '@/src/state/performedExerciseSlice';
 import { addWorkouts } from '@/src/state/workoutSlice';
 import { useAppDispatch, useAppSelector } from '@/src/state/store';
 import { selectWorkouts } from '@/src/state/selectors';
+import { addUser } from '@/src/state/userSlice';
 
 export default function Home() {
   const { session } = useSession();
   const dispatch = useAppDispatch();
-  const { data, isLoading, error, securedFetch } = useJwtFetcher<Workout[]>();
+  const { isLoading, error, securedFetch } = useJwtFetcher();
   const workouts = useAppSelector((state) => selectWorkouts(state));
 
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      if (session) {
-        await securedFetch(
-          `${BACKEND_API_URL}/workouts/users/${session.userId}`,
-          session.token
-        );
-      }
-    };
+  const fetchWorkouts = async () => {
+    if (!session) return;
 
-    fetchWorkouts();
-  }, [session]);
+    const workoutData = (await securedFetch(
+      `${BACKEND_API_URL}/workouts/users/${session.userId}`,
+      session.token
+    )) as Workout[];
 
-  useEffect(() => {
-    if (data) {
+    if (workoutData) {
       const { normalizedWorkouts, normalizedExercises } =
-        normalizeWorkoutData(data);
+        normalizeWorkoutData(workoutData);
       dispatch(addWorkouts(normalizedWorkouts));
       dispatch(addExercises(normalizedExercises));
     }
-  }, [data]);
+  };
+
+  const fetchUser = async () => {
+    if (!session) return;
+
+    const userData = (await securedFetch(
+      `${BACKEND_API_URL}/users/${session.userId}`,
+      session.token,
+      { method: 'GET' }
+    )) as User;
+
+    if (userData) {
+      dispatch(addUser(userData));
+    }
+  };
+
+  useEffect(() => {
+    fetchWorkouts();
+    fetchUser();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <ScrollView showsVerticalScrollIndicator={false} style={{}}>

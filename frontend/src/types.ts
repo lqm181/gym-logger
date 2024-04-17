@@ -39,3 +39,12 @@ export interface ExercisePerformedState {
   allIds: (number | string)[];
   byIds: { [id: string | number]: ExercisePerformed };
 }
+
+export interface User {
+  id: string | number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  img_url?: string;
+  weight_unit?: 'kg' | 'lbs';
+}

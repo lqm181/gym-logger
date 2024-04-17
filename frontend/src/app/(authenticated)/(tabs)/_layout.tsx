@@ -78,6 +78,7 @@ export default function Layout() {
         name='profile'
         options={{
           title: 'Profile',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <FontAwesome6 name='user' size={size} color={color} />
           ),

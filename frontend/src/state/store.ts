@@ -3,9 +3,11 @@ import performedExerciseSlice from './performedExerciseSlice';
 import workoutSlice from './workoutSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import userSlice from './userSlice';
 
 export const store = configureStore({
   reducer: {
+    user: userSlice,
     workouts: workoutSlice,
     performedExercises: performedExerciseSlice,
   },

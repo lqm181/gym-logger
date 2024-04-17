@@ -1,4 +1,3 @@
-import { Workout } from '@/src/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NormalizedWorkout, WorkoutState } from '../types';
 

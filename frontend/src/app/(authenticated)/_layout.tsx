@@ -16,7 +16,12 @@ const _layout = () => {
     signOut();
     return <Redirect href='/welcome' />;
   }
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+      <Stack.Screen name='(log)' options={{ headerShown: false }} />
+    </Stack>
+  );
 };
 
 export default _layout;
