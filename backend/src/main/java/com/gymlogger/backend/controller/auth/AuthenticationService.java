@@ -1,4 +1,4 @@
-package com.gymlogger.backend.service;
+package com.gymlogger.backend.controller.auth;
 
 import com.gymlogger.backend.controller.auth.AuthenticationRequest;
 import com.gymlogger.backend.controller.auth.AuthenticationResponse;

@@ -1,4 +1,4 @@
-package com.gymlogger.backend.service;
+package com.gymlogger.backend.controller.auth;
 
 import com.gymlogger.backend.filter.JwtService;
 import com.gymlogger.backend.token.Token;

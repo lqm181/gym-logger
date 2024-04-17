@@ -1,4 +1,4 @@
-package com.gymlogger.backend.token;
+package com.gymlogger.backend.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
