@@ -1,7 +1,6 @@
 package com.gymlogger.backend.controller.auth;
 
 import com.gymlogger.backend.filter.JwtService;
-import com.gymlogger.backend.token.Token;
 import com.gymlogger.backend.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LogoutService implements LogoutHandler {
     private final TokenRepository tokenRepository;
-    private final JwtService jwtService;
 
     @Override
     public void logout(
@@ -32,8 +30,10 @@ public class LogoutService implements LogoutHandler {
         }
 
         jwt = authHeader.substring((7));
-        userEmail = jwtService.extractUsername(jwt);
-        tokenRepository.findById(userEmail)
-                .ifPresent(tokenRepository::delete);
+        tokenRepository.findByToken(jwt)
+                .ifPresent(token -> {
+                    token.setRevoked(true);
+                    tokenRepository.save(token);
+                });
     }
 }

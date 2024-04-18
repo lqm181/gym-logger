@@ -52,9 +52,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userService.loadUserByUsername(userEmail);
 
             // Check Redis database to see if the token matched and was not revoked.
-            System.out.println(tokenRepository.findById(userEmail));
-            boolean isTokenValid = tokenRepository.findById(userEmail)
-                    .map(t -> t.getToken().equals(jwt) && !t.isRevoked())
+            boolean isTokenValid = tokenRepository.findByToken(jwt)
+                    .map(t -> !t.isRevoked())
                     .orElse(false);
 
             // Update the security context and send request to dispatch servlet
