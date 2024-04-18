@@ -44,7 +44,7 @@ const EditSetModal = ({
     }
     const updatedSet = (await securedFetch(
       `${BACKEND_API_URL}/exercise-sets/${initialValue.id}`,
-      session.token,
+      session.accessToken,
       {
         method: 'PUT',
         headers: {

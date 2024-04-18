@@ -42,7 +42,7 @@ const AddWorkoutButton = ({ children, ...props }: TouchableOpacityProps) => {
 
     const newWorkout = await securedFetch(
       `${BACKEND_API_URL}/workouts/users/${session.userId}`,
-      session?.token,
+      session?.accessToken,
       {
         method: 'POST',
         headers: {

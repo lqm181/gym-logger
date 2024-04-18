@@ -35,7 +35,7 @@ const DeleteSetConfirmModal = ({
     }
     await securedFetch(
       `${BACKEND_API_URL}/exercise-sets/${exerciseSetId}`,
-      session.token,
+      session.accessToken,
       {
         method: 'DELETE',
       }

@@ -3,9 +3,10 @@ import { useStorageState } from '../hooks/useStorageState';
 import { BACKEND_API_URL } from '../constants';
 
 interface Session {
-  token: string;
+  accessToken: string;
   userId: number;
   email: string;
+  refreshToken: String;
 }
 
 interface AuthContextProps {

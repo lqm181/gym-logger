@@ -24,7 +24,7 @@ export default function Home() {
 
     const workoutData = (await securedFetch(
       `${BACKEND_API_URL}/workouts/users/${session.userId}`,
-      session.token
+      session.accessToken
     )) as Workout[];
 
     if (workoutData) {
@@ -40,7 +40,7 @@ export default function Home() {
 
     const userData = (await securedFetch(
       `${BACKEND_API_URL}/users/${session.userId}`,
-      session.token,
+      session.accessToken,
       { method: 'GET' }
     )) as User;
 

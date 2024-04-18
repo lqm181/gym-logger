@@ -49,7 +49,7 @@ const AddSetModal = ({
 
     const newSetData = (await securedFetch(
       `${BACKEND_API_URL}/exercise-sets/performed-exercises/${performedExerciseId}`,
-      session.token,
+      session.accessToken,
       {
         method: 'POST',
         headers: {

@@ -10,7 +10,7 @@ const _layout = () => {
     return <Text>Loading...</Text>;
   }
 
-  if (!session || !isValidJwt(session.token)) {
+  if (!session || !isValidJwt(session.accessToken)) {
     // If the user has not signed in (not session)
     // or if the token expired, then redirect to sign in page.
     signOut();

@@ -57,7 +57,7 @@ const AddExerciseModal = ({
 
     const newData = (await securedFetch(
       `${BACKEND_API_URL}/performed-exercises/workouts/${workoutId}`,
-      session.token,
+      session.accessToken,
       {
         method: 'POST',
         headers: {
@@ -94,7 +94,7 @@ const AddExerciseModal = ({
       if (!session) return;
       const optionData = (await securedFetch(
         `${BACKEND_API_URL}/exercises`,
-        session.token,
+        session.accessToken,
         { method: 'GET' }
       )) as Exercise[];
 
