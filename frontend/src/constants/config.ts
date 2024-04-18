@@ -1,0 +1,3 @@
+const BACKEND_API_URL = process.env.EXPO_PUBLIC_BACKEND_API;
+
+export { BACKEND_API_URL };
