@@ -2,6 +2,7 @@ package com.gymlogger.backend.filter;
 
 import com.gymlogger.backend.service.UserService;
 import com.gymlogger.backend.token.TokenRepository;
+import com.gymlogger.backend.token.TokenType;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
 
-        // Check if the request has JTW Authentication
+        // Check if the request has JWT Authentication
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -52,10 +53,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userService.loadUserByUsername(userEmail);
 
             // Check Redis database to see if the token matched and was not revoked.
-            System.out.println(tokenRepository.findById(userEmail));
-            boolean isTokenValid = tokenRepository.findById(userEmail)
-                    .map(t -> t.getToken().equals(jwt) && !t.isRevoked())
-                    .orElse(false);
+            boolean isTokenValid = tokenRepository.findByToken(jwt)
+                    .map(t ->
+                            t.getTokenType() == TokenType.JWT
+                            && !t.isRevoked()
+                    ).orElse(false);
 
             // Update the security context and send request to dispatch servlet
             if (isTokenValid && jwtService.isTokenValid(jwt, userDetails)) {

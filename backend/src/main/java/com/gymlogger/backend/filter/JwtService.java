@@ -19,9 +19,17 @@ import java.util.function.Function;
 public class JwtService {
     private final String SECRET_KEY;
 
-    public JwtService(@Value("${jwt.secret:JWT_SECRET_KEY}") String jwtSecret) {
+    private final Long jwtExpiration;
+    private final Long refreshTokenExpiration;
+
+    public JwtService(@Value("${jwt.secret}") String jwtSecret,
+                      @Value("${app.security.jwt.expiration}") Long jwtExpiration,
+                      @Value("${app.security.refresh-token.expiration}") Long refreshTokenExpiration) {
         this.SECRET_KEY = jwtSecret;
+        this.jwtExpiration = jwtExpiration;
+        this.refreshTokenExpiration = refreshTokenExpiration;
     }
+
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -34,6 +42,17 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
+    }
+
+    public String generateRefreshToken(
+            Map<String, Objects> extraClaims,
+            UserDetails userDetails
+    ) {
+        return tokenBuilder(extraClaims, userDetails, this.refreshTokenExpiration);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return generateRefreshToken(new HashMap<>(), userDetails);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -50,18 +69,25 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public String generateToken(
+    private String tokenBuilder(
             Map<String, Objects> extraClaims,
-            UserDetails userDetails
-    ) {
+            UserDetails userDetails,
+            Long expiration) {
         return Jwts
                 .builder()
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 6)) // Token valid for 6 hours
+                .expiration(new Date(System.currentTimeMillis() + expiration)) // Token valid for 6 hours
                 .signWith(getSignInKey())
                 .compact();
+    }
+
+    public String generateToken(
+            Map<String, Objects> extraClaims,
+            UserDetails userDetails
+    ) {
+        return tokenBuilder(extraClaims, userDetails, this.jwtExpiration);
     }
 
     private Claims extractAllClaims(String token) {
