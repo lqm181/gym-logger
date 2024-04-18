@@ -22,7 +22,6 @@ public class LogoutService implements LogoutHandler {
     ) {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String userEmail;
 
         // Check if the request has JTW Authentication
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
